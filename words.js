@@ -317,6 +317,21 @@ carry|有出售
 cash on delivery|貨到付現
 catalog|目錄
 chain store|連鎖店
+commodity|商品
+compliant|抱怨
+consumer base|消費群
+coupon|優惠眷
+credit|把........紀入
+dealer|業者
+delivery|運送
+discount|折扣
+estimate|估計
+exclusive|獨家的
+fail to|未達成
+feedback|意見回饋
+flaw|缺點
+fragile|脆弱的 易脆的
+freight|運費
 `;
 
 function uniqueWords(data){
