@@ -60,34 +60,62 @@ export default function Page2() {
   return (
     <>
 <style jsx global>{`
-  :root { 
-    --bg: #f7f3ea; 
-    --ink: #000000;           /* 改為純黑 */
-    --muted: #000000;         /* 改為純黑 */
-    --primary: #2f6f73; 
-    --line: #334155;          /* 邊框加深 */
+  /* 直接寫死顏色，不依賴 :root 變數，避免讀取錯誤 */
+  body { 
+    background-color: #f7f3ea !important; 
+    font-family: Arial, sans-serif; 
+    color: #000000 !important; 
   }
   
-  /* 選項按鈕設定 */
+  .shell { 
+    background-color: #ffffff !important; 
+    border: 2px solid #64748b !important; 
+    border-radius: 12px; 
+    padding: 32px; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
+  }
+  
+  .q-title { 
+    font-size: 40px !important; 
+    font-weight: 900 !important; 
+    text-align: center; 
+    margin: 25px 0; 
+    color: #000000 !important; 
+  }
+  
+  .options-grid { 
+    display: grid !important; 
+    grid-template-columns: 1fr 1fr !important; 
+    gap: 16px !important; 
+    margin: 25px 0; 
+  }
+  
   .opt-btn { 
-    padding: 20px; 
-    background: #ffffff; 
-    border: 2px solid #334155; /* 邊框加深 */
-    border-radius: 8px; 
-    font-size: 20px; 
-    font-weight: 900;          /* 極致加粗 */
-    color: #000000 !important; /* 強制文字變黑 */
+    padding: 20px !important; 
+    background-color: #ffffff !important; 
+    border: 2px solid #334155 !important; 
+    border-radius: 8px !important; 
+    font-size: 20px !important; 
+    font-weight: 900 !important; 
+    color: #000000 !important; 
     cursor: pointer; 
     text-align: center; 
   }
 
-  /* 答對與答錯時的顏色，也要維持深色文字 */
-  .opt-btn.correct { background: #d1fae5; border-color: #059669; color: #064e3b !important; font-weight: 900; }
-  .opt-btn.wrong { background: #fee2e2; border-color: #dc2626; color: #991b1b !important; font-weight: 900; }
+  .count-btn { 
+    padding: 10px 20px !important; 
+    border: 2px solid #2f6f73 !important; 
+    background-color: #ffffff !important; 
+    color: #2f6f73 !important; 
+    font-weight: 900 !important; 
+    cursor: pointer; 
+    border-radius: 6px !important; 
+  }
   
-  /* 確保其他提示文字也變深 */
-  .q-title { color: #000000 !important; font-weight: 900; }
-  strong { color: #000000 !important; font-weight: 900; }
+  .count-btn.active { 
+    background-color: #2f6f73 !important; 
+    color: #ffffff !important; 
+  }
 `}</style>
 
       <main style={{ width: "min(700px, calc(100% - 32px))", margin: "40px auto" }}>
