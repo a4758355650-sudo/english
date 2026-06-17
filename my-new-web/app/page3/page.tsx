@@ -108,20 +108,20 @@ export default function Page3() {
   return (
     <>
       <style jsx global>{`
-        :root { --bg: #f7f3ea; --ink: #1e293b; --muted: #64748b; --primary: #2f6f73; --accent: #c7673c; --line: #d8dee8; --success: #10b981; }
-        body { background: var(--bg); font-family: Arial, sans-serif; }
-        .shell { background: white; border: 1px solid var(--line); border-radius: 12px; padding: 32px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-        .q-title { font-size: 36px; font-weight: bold; text-align: center; margin: 20px 0; color: var(--accent); }
-        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 25px 0; }
-        .opt-btn { padding: 16px; background: #f8fafc; border: 1px solid var(--line); border-radius: 8px; font-size: 16px; cursor: pointer; }
-        .opt-btn.correct { background: #d1fae5; border-color: var(--success); color: #065f46; font-weight: bold; }
-        .opt-btn.wrong { background: #fee2e2; border-color: var(--accent); color: #991b1b; }
-        .badge-count { background: #ffedd5; color: #9a3412; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; }
-        .list-container { margin-top: 35px; border-top: 2px dashed var(--line); padding-top: 25px; }
-        .wrong-item { display: flex; justify-content: space-between; padding: 12px; border-bottom: 1px solid #f1f5f9; align-items: center; }
-        .btn-action { padding: 10px 20px; background: var(--primary); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
-        .btn-danger { background: #ef4444; margin-left: auto; display: block; }
-      `}</style>
+  :root { --bg: #f7f3ea; --ink: #000000; --muted: #334155; --primary: #2f6f73; --accent: #c7673c; --line: #64748b; --success: #059669; }
+  body { background: var(--bg); font-family: Arial, sans-serif; color: var(--ink); }
+  .shell { background: white; border: 2px solid var(--line); border-radius: 12px; padding: 32px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+  .q-title { font-size: 40px; font-weight: 900; text-align: center; margin: 25px 0; color: #000000; }
+  .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 25px 0; }
+  .opt-btn { padding: 18px; background: #ffffff; border: 2px solid #475569; border-radius: 8px; font-size: 18px; font-weight: 800; color: #0f172a; cursor: pointer; }
+  .opt-btn.correct { background: #d1fae5; border-color: #059669; color: #064e3b; font-weight: 900; }
+  .opt-btn.wrong { background: #fee2e2; border-color: #dc2626; color: #991b1b; font-weight: 900; }
+  .badge-count { background: #ffedd5; color: #7c2d12; padding: 6px 14px; border-radius: 20px; font-size: 14px; font-weight: 900; }
+  .list-container { margin-top: 35px; border-top: 3px dashed var(--line); padding-top: 25px; }
+  .wrong-item { display: flex; justify-content: space-between; padding: 16px; border-bottom: 1px solid #cbd5e1; align-items: center; }
+  .btn-action { padding: 12px 24px; background: var(--primary); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 800; font-size: 15px; }
+  .btn-danger { background: #dc2626; margin-left: auto; display: block; }
+`}</style>
 
       <main style={{ width: "min(750px, calc(100% - 32px))", margin: "40px auto" }}>
         <div className="shell">

@@ -36,9 +36,9 @@ export default function Page2() {
     if (isAnswered) return;
     setSelectedOption(opt); setIsAnswered(true);
     const currentWord = quizList[currentQuizIndex];
-    
-    if (opt === currentWord[1]) { 
-      setScore((prev) => prev + 1); 
+
+    if (opt === currentWord[1]) {
+      setScore((prev) => prev + 1);
     } else {
       // 💡 答錯時，直接寫入 Firebase Cloud Firestore
       const currentUser = auth.currentUser;
@@ -57,14 +57,14 @@ export default function Page2() {
   return (
     <>
       <style jsx global>{`
-        :root { --bg: #f7f3ea; --ink: #1e293b; --muted: #64748b; --primary: #2f6f73; --accent: #c7673c; --line: #d8dee8; --success: #10b981; }
-        .shell { background: white; border: 1px solid var(--line); border-radius: 12px; padding: 32px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-        .q-title { font-size: 36px; font-weight: bold; text-align: center; margin: 20px 0; color: var(--ink); }
-        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 25px 0; }
-        .opt-btn { padding: 16px; background: #f8fafc; border: 1px solid var(--line); border-radius: 8px; font-size: 16px; cursor: pointer; textAlign: left; }
-        .opt-btn.correct { background: #d1fae5; border-color: var(--success); color: #065f46; font-weight: bold; }
-        .opt-btn.wrong { background: #fee2e2; border-color: var(--accent); color: #991b1b; }
-      `}</style>
+  :root { --bg: #f7f3ea; --ink: #0f172a; --muted: #1e293b; --primary: #2f6f73; --accent: #c7673c; --line: #64748b; --success: #059669; }
+  .shell { background: white; border: 2px solid var(--line); border-radius: 12px; padding: 32px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+  .q-title { font-size: 42px; font-weight: 900; text-align: center; margin: 25px 0; color: #000000; }
+  .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 25px 0; }
+  .opt-btn { padding: 20px; background: #ffffff; border: 2px solid #475569; border-radius: 8px; font-size: 20px; font-weight: 800; color: #0f172a; cursor: pointer; text-align: center; }
+  .opt-btn.correct { background: #d1fae5; border-color: #059669; color: #064e3b; font-weight: 900; }
+  .opt-btn.wrong { background: #fee2e2; border-color: #dc2626; color: #991b1b; font-weight: 900; }
+`}</style>
       <main style={{ width: "min(700px, calc(100% - 32px))", margin: "40px auto" }}>
         <div className="shell">
           {!quizFinished ? (
