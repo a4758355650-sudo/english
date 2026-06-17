@@ -333,6 +333,20 @@ feedback|意見回饋
 flaw|缺點
 fragile|脆弱的 易脆的
 freight|運費
+guarantee|保證
+fulfill|達到
+in bulk|大量
+invoice|發票
+lump sum|一次付清
+maintain|維持
+minimize|使減少到最少
+notify|通知
+on hand|馬上可用的
+order|訂購訂貨
+packing list|裝箱單
+parcel|包裹
+payment in advance|預先付款
+price war|價格戰
 `;
 
 // 2. 過濾重複單字的函數（加上精確的 TypeScript 陣列型態定義）
