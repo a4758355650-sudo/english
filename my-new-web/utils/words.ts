@@ -11,45 +11,45 @@ budget|預算
 contract|合約
 attend|參加
 invoice|發票
+reschedule|重新安排
+deadline|截止日期
 refund|退款
+meeting|會議
 employee|員工
 manager|經理
 department|部門
 appointment|預約
 customer|顧客
 equipment|裝置
-salary|薪水
-repair|修理
-interview|面試
-approve|核准
-cancel|取消
-estimate|估計
-guarantee|保證
-recommend|推薦
-update|更新
-maintain|維持
-solution|解決方案
-temporary|暫時的
-urgent|緊急的
-reschedule|重新安排
-deadline|截止日期
-meeting|會議
 advertisement|廣告
 application|申請
 reservation|預定
 payment|付款
 receipt|收據
+salary|薪水
+repair|修理
+interview|面試
 project|專案
+approve|核准
+cancel|取消
+estimate|估計
+guarantee|保證
+recommend|推薦
 reserve|預定
+update|更新
+maintain|維持
 replace|更換
 respond|回復
-survey|問卷/調查
-transfer|調職/轉移
+solution|解決方案
+survey|問卷／調查
+temporary|暫時的
+transfer|調職／轉移
+urgent|緊急的
 authorize|授權
 brochure|小冊子
 commute|通勤
 destination|目的地
-enroll|註冊/報名
+enroll|註冊、報名
 facility|設施
 fare|車資
 inventory|庫存
@@ -75,7 +75,7 @@ document|公文
 enlarge|放大
 executive|經理主管人員
 extension|分機號碼
-facilitate|使容易/使順暢
+facilitate|使容易／使順暢
 figure out|解決
 floor|發言權
 forward|轉寄
@@ -133,49 +133,29 @@ arrangement|安排
 assurance|保證
 attract|吸引
 avoid|避免
-bargain|議價/便宜貨
 bid|投標
-boardroom|會議室
 brainstorming|腦力激盪
-cancellation|取消
 clause|條款
-commercial|商業的/廣告
-competition|競爭
-compromise|妥協
 conclude|得出結論
 confidential|秘密
-convince|說服
-demonstrate|示範
 designate|標示
 detach|分離
 determine|決定
-develop|發展
 direct marketing|直效行銷
-distribution|分配/配銷/流通
 downsize|縮編
 enclose|封入附上
-enterprise|企業/公司
-establish|創立
-evaluate|評估
+enterprise|事業／企業／公司
 franchise|經銷權
-go over|查看/重溫
-headquarters|總部
 inevitable|不可避免
 legitimate|合法的
-mission|任務
 negotiate|協商
 objection|反對
-offer|報價
 open to|開放的空間
 party|當事人
 persuasion|說服
-presentation|簡報
 productive|具建設性
-progress|進展
 register|登錄
-reputation|聲譽
-retail|零售
-satisfy|履行契約
+satisfy|履行(契約)
 session|會議
 strategy|策略
 terminate|使結束
@@ -205,20 +185,19 @@ hiring criteria|錄取標準
 human resources|人力資源
 incentive|刺激
 intern|實習生
-interviewee|面釋者
+interviewee|面試者
 job description|工作說明
 job fair|徵才博覽會
-job opening|工作職缺
 lay off|解雇
 leave without pay|留職停薪
 move up|提升
 multitasking|多重任務處理
-on track|有望成功/步入正軌
+on track|有望成功／步入正軌
 on the job training|在職訓練
 overtime|加班
-pay check|薪資支票/工資
+pay check|薪資支票／工資
 pension|退休金
-personnel|人員/人事部
+personnel|人員／人事部
 pink slip|解雇通知單
 position|職位
 probationary period|試用期
@@ -270,13 +249,12 @@ fluctuate|波動
 gadget|小機件
 glitch|小故障
 high tech industry|高科技產業
-in house|內部完成
+in house|內部完成而不假外力
 inspect|檢查
 install|安裝
 launch|產品上市
 life test|測試使用壽命
 machinery|機械裝置
-maintenance|維護/保養
 manufacturer|製造業者
 mass production|大量生產
 mechanic|技師
@@ -321,24 +299,20 @@ chain store|連鎖店
 commodity|商品
 compliant|抱怨
 consumer base|消費群
-coupon|優惠眷
-credit|把........紀入
+coupon|優惠券
+credit|把……紀入
 dealer|業者
 delivery|運送
 discount|折扣
-estimate|估計
 exclusive|獨家的
 fail to|未達成
 feedback|意見回饋
 flaw|缺點
-fragile|脆弱的 易脆的
+fragile|脆弱的／易碎的
 freight|運費
-guarantee|保證
 fulfill|達到
 in bulk|大量
-invoice|發票
 lump sum|一次付清
-maintain|維持
 minimize|使減少到最少
 notify|通知
 on hand|馬上可用的
