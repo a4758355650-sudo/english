@@ -107,20 +107,35 @@ export default function Page3() {
 
   return (
     <>
-      <style jsx global>{`
-  :root { --bg: #f7f3ea; --ink: #000000; --muted: #334155; --primary: #2f6f73; --accent: #c7673c; --line: #64748b; --success: #059669; }
-  body { background: var(--bg); font-family: Arial, sans-serif; color: var(--ink); }
-  .shell { background: white; border: 2px solid var(--line); border-radius: 12px; padding: 32px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-  .q-title { font-size: 40px; font-weight: 900; text-align: center; margin: 25px 0; color: #000000; }
-  .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 25px 0; }
-  .opt-btn { padding: 18px; background: #ffffff; border: 2px solid #475569; border-radius: 8px; font-size: 18px; font-weight: 800; color: #0f172a; cursor: pointer; }
-  .opt-btn.correct { background: #d1fae5; border-color: #059669; color: #064e3b; font-weight: 900; }
-  .opt-btn.wrong { background: #fee2e2; border-color: #dc2626; color: #991b1b; font-weight: 900; }
-  .badge-count { background: #ffedd5; color: #7c2d12; padding: 6px 14px; border-radius: 20px; font-size: 14px; font-weight: 900; }
-  .list-container { margin-top: 35px; border-top: 3px dashed var(--line); padding-top: 25px; }
-  .wrong-item { display: flex; justify-content: space-between; padding: 16px; border-bottom: 1px solid #cbd5e1; align-items: center; }
-  .btn-action { padding: 12px 24px; background: var(--primary); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 800; font-size: 15px; }
-  .btn-danger { background: #dc2626; margin-left: auto; display: block; }
+<style jsx global>{`
+  :root { 
+    --bg: #f7f3ea; 
+    --ink: #000000;           /* 改為純黑 */
+    --muted: #000000;         /* 改為純黑 */
+    --primary: #2f6f73; 
+    --line: #334155;          /* 邊框加深 */
+  }
+  
+  /* 選項按鈕設定 */
+  .opt-btn { 
+    padding: 20px; 
+    background: #ffffff; 
+    border: 2px solid #334155; /* 邊框加深 */
+    border-radius: 8px; 
+    font-size: 20px; 
+    font-weight: 900;          /* 極致加粗 */
+    color: #000000 !important; /* 強制文字變黑 */
+    cursor: pointer; 
+    text-align: center; 
+  }
+
+  /* 答對與答錯時的顏色，也要維持深色文字 */
+  .opt-btn.correct { background: #d1fae5; border-color: #059669; color: #064e3b !important; font-weight: 900; }
+  .opt-btn.wrong { background: #fee2e2; border-color: #dc2626; color: #991b1b !important; font-weight: 900; }
+  
+  /* 確保其他提示文字也變深 */
+  .q-title { color: #000000 !important; font-weight: 900; }
+  strong { color: #000000 !important; font-weight: 900; }
 `}</style>
 
       <main style={{ width: "min(750px, calc(100% - 32px))", margin: "40px auto" }}>
