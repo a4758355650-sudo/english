@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="zh-Hant">
-      <body style={{ margin: 0, padding: 0, background: "#91866d" }}>
+      <body style={{ margin: 0, padding: 0, background: "#e0ddd5" }}>
         {/* 把內容丟進守衛裡面驗證 */}
         <AuthProvider>{children}</AuthProvider>
       </body>
