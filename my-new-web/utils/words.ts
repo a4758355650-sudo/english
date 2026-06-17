@@ -126,35 +126,55 @@ loyalty|忠實
 specialty|專長
 address|地址
 adjourn|中止
-afford|負擔得起
+afford|負擔的起
 agenda|議程
 agreement|一致
 arrangement|安排
 assurance|保證
 attract|吸引
 avoid|避免
+bargain|議價／便宜貨
 bid|投標
+boardroom|會議室
 brainstorming|腦力激盪
+cancellation|取消
 clause|條款
+commercial|廣告／商業的
+competition|競爭
+compromise|妥協
 conclude|得出結論
 confidential|秘密
+convince|說服
+demonstrate|示範
 designate|標示
 detach|分離
 determine|決定
+develop|發展
 direct marketing|直效行銷
+distribution|分配／配銷／流通
 downsize|縮編
-enclose|封入附上
+enclose|把封入附上
 enterprise|事業／企業／公司
+establish|創立
+evaluate|評估
 franchise|經銷權
+go over|查看／重溫
+headquarters|總部
 inevitable|不可避免
 legitimate|合法的
+mission|任務
 negotiate|協商
 objection|反對
+offer|報價
 open to|開放的空間
 party|當事人
 persuasion|說服
+presentation|簡報
 productive|具建設性
+progress|進展
 register|登錄
+reputation|聲譽
+retail|零售
 satisfy|履行(契約)
 session|會議
 strategy|策略
@@ -188,6 +208,7 @@ intern|實習生
 interviewee|面試者
 job description|工作說明
 job fair|徵才博覽會
+job opening|工作職缺
 lay off|解雇
 leave without pay|留職停薪
 move up|提升
@@ -255,6 +276,7 @@ install|安裝
 launch|產品上市
 life test|測試使用壽命
 machinery|機械裝置
+maintenance|維護／保養
 manufacturer|製造業者
 mass production|大量生產
 mechanic|技師
@@ -288,7 +310,7 @@ village|村莊
 abundant|大量的
 adjustment|調整
 appliance|器具
-automatically|自動地
+automatically|自動的
 buyers guide|買家指南
 carriage free|免付運費
 carrier|運輸公司
@@ -316,7 +338,7 @@ lump sum|一次付清
 minimize|使減少到最少
 notify|通知
 on hand|馬上可用的
-order|訂購訂貨
+order|訂購／訂貨
 packing list|裝箱單
 parcel|包裹
 payment in advance|預先付款
