@@ -24,17 +24,52 @@ export default function Page1() {
 
   return (
     <>
-<style jsx global>{`
-  :root { --bg: #f7f3ea; --ink: #0f172a; --muted: #334155; --primary: #2f6f73; --primary-dark: #1e3a3b; --line: #64748b; }
-  body { background: var(--bg); min-height: 100vh; font-family: Arial, sans-serif; }
-  .shell { background: white; border: 2px solid var(--line); border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); padding: 32px; text-align: center; }
-  .flashcard { background: white; border: 3px solid var(--primary); border-radius: 12px; padding: 50px 20px; margin: 30px 0; }
-  .eng { font-size: 52px; font-weight: 900; color: #000000; margin-bottom: 20px; }
-  .ch { font-size: 32px; color: #1e293b; min-height: 40px; font-weight: 800; }
-  .btn-group { display: flex; justify-content: center; gap: 12px; margin-top: 24px; }
-  .btn { padding: 14px 28px; background: var(--primary); color: white; border: none; border-radius: 6px; font-weight: 900; font-size: 16px; cursor: pointer; }
-  .btn-sec { background: transparent; color: var(--primary); border: 2px solid var(--primary); font-weight: 900; }
-  .progress-text { color: var(--muted); font-size: 16px; font-weight: 700; }
+      <style jsx global>{`
+  /* 極簡風全域設定 */
+  body {
+    background-color: #ffffff !important; /* 純白背景，視覺極度乾淨 */
+    color: #000000 !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    margin: 0;
+  }
+
+  /* 去除陰影，只保留細黑邊框 */
+  .shell, .login-card, .flashcard {
+    background-color: #ffffff !important;
+    border: 1px solid #000000 !important; /* 極細黑色邊框 */
+    border-radius: 0px !important;       /* 直角設計，極簡風特徵 */
+    padding: 40px !important;
+    box-shadow: none !important;         /* 移除陰影 */
+  }
+
+  /* 標題與文字：純黑，無贅飾 */
+  .q-title, .eng, .ch {
+    color: #000000 !important;
+    font-weight: 700 !important;
+  }
+
+  /* 按鈕：極簡風格 */
+  .opt-btn, .btn {
+    padding: 16px !important;
+    background-color: #ffffff !important;
+    border: 1px solid #000000 !important;
+    border-radius: 0px !important;
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    color: #000000 !important;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  /* 滑鼠滑過按鈕時的反轉效果，極簡風常見互動 */
+  .opt-btn:hover, .btn:hover {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+  }
+
+  /* 答對與答錯：僅用黑色線條標示，不使用過多的紅綠色塊 */
+  .opt-btn.correct { border: 2px solid #000000 !important; background: #f0f0f0 !important; }
+  .opt-btn.wrong { border: 2px solid #000000 !important; text-decoration: line-through; opacity: 0.5; }
 `}</style>
 
       <main style={{ width: "min(650px, calc(100% - 32px))", margin: "50px auto" }}>

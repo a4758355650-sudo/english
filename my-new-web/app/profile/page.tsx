@@ -27,15 +27,25 @@ export default function ProfilePage() {
   if (loading) return <div style={{ padding: 50, textAlign: "center" }}>載入中...</div>;
 
   return (
-    <main style={{ maxWidth: "500px", margin: "50px auto", padding: "30px", background: "white", borderRadius: "12px", border: "1px solid #d8dee8" }}>
-      <h2 style={{ color: "#2f6f73" }}>👤 個人中心</h2>
-      <div style={{ margin: "20px 0", padding: "15px", background: "#f8fafc", borderRadius: "8px" }}>
-        <p><strong>電子郵件：</strong> {user?.email}</p>
-        <p style={{ fontSize: "12px", color: "#64748b" }}><strong>UID：</strong> {user?.uid}</p>
+    // 在 profile/page.tsx 裡，把原本圓角的 style 簡化為：
+    <main style={{
+      maxWidth: "500px",
+      margin: "50px auto",
+      padding: "40px",
+      background: "white",
+      border: "1px solid #000000" // 極簡風：單像素黑框
+    }}>
+      <h2 style={{ fontWeight: "700" }}>個人中心</h2>
+      <div style={{ margin: "30px 0", padding: "20px", border: "1px solid #000000" }}>
+        <p>電子郵件：{user?.email}</p>
+        <p>UID：{user?.uid}</p>
       </div>
-      <button 
+      <button
         onClick={handleSignOut}
-        style={{ width: "100%", padding: "12px", background: "#e11d48", color: "white", border: "none", borderRadius: "6px", cursor: "pointer", fontWeight: "bold" }}
+        style={{
+          width: "100%", padding: "16px", background: "white", border: "1px solid #000000",
+          cursor: "pointer", fontWeight: "600"
+        }}
       >
         登出系統
       </button>

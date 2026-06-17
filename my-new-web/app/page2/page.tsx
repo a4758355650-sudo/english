@@ -60,62 +60,51 @@ export default function Page2() {
   return (
     <>
 <style jsx global>{`
-  /* 直接寫死顏色，不依賴 :root 變數，避免讀取錯誤 */
-  body { 
-    background-color: #f7f3ea !important; 
-    font-family: Arial, sans-serif; 
-    color: #000000 !important; 
-  }
-  
-  .shell { 
-    background-color: #ffffff !important; 
-    border: 2px solid #64748b !important; 
-    border-radius: 12px; 
-    padding: 32px; 
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
-  }
-  
-  .q-title { 
-    font-size: 40px !important; 
-    font-weight: 900 !important; 
-    text-align: center; 
-    margin: 25px 0; 
-    color: #000000 !important; 
-  }
-  
-  .options-grid { 
-    display: grid !important; 
-    grid-template-columns: 1fr 1fr !important; 
-    gap: 16px !important; 
-    margin: 25px 0; 
-  }
-  
-  .opt-btn { 
-    padding: 20px !important; 
-    background-color: #ffffff !important; 
-    border: 2px solid #334155 !important; 
-    border-radius: 8px !important; 
-    font-size: 20px !important; 
-    font-weight: 900 !important; 
-    color: #000000 !important; 
-    cursor: pointer; 
-    text-align: center; 
+  /* 極簡風全域設定 */
+  body {
+    background-color: #ffffff !important; /* 純白背景，視覺極度乾淨 */
+    color: #000000 !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    margin: 0;
   }
 
-  .count-btn { 
-    padding: 10px 20px !important; 
-    border: 2px solid #2f6f73 !important; 
-    background-color: #ffffff !important; 
-    color: #2f6f73 !important; 
-    font-weight: 900 !important; 
-    cursor: pointer; 
-    border-radius: 6px !important; 
+  /* 去除陰影，只保留細黑邊框 */
+  .shell, .login-card, .flashcard {
+    background-color: #ffffff !important;
+    border: 1px solid #000000 !important; /* 極細黑色邊框 */
+    border-radius: 0px !important;       /* 直角設計，極簡風特徵 */
+    padding: 40px !important;
+    box-shadow: none !important;         /* 移除陰影 */
   }
-  
-  .count-btn.active { 
-    background-color: #2f6f73 !important; 
-    color: #ffffff !important; 
+
+  /* 標題與文字：純黑，無贅飾 */
+  .q-title, .eng, .ch {
+    color: #000000 !important;
+    font-weight: 700 !important;
   }
+
+  /* 按鈕：極簡風格 */
+  .opt-btn, .btn {
+    padding: 16px !important;
+    background-color: #ffffff !important;
+    border: 1px solid #000000 !important;
+    border-radius: 0px !important;
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    color: #000000 !important;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  /* 滑鼠滑過按鈕時的反轉效果，極簡風常見互動 */
+  .opt-btn:hover, .btn:hover {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+  }
+
+  /* 答對與答錯：僅用黑色線條標示，不使用過多的紅綠色塊 */
+  .opt-btn.correct { border: 2px solid #000000 !important; background: #f0f0f0 !important; }
+  .opt-btn.wrong { border: 2px solid #000000 !important; text-decoration: line-through; opacity: 0.5; }
 `}</style>
 
       <main style={{ width: "min(700px, calc(100% - 32px))", margin: "40px auto" }}>
