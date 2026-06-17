@@ -42,7 +42,7 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
         <div className="nav-brand">📈 多益單字衝刺站</div>
         <Link href="/" className="nav-link">🏠 首頁</Link>
         <Link href="/page1" className="nav-link">📖 全部單字練習</Link>
-        <Link href="/page2" className="nav-link">🎲 30題抽考</Link>
+        <Link href="/page2" className="nav-link">🎲 選擇題抽考</Link>
         <Link href="/page3" className="nav-link">🎯 不熟悉單字</Link>
         
         <div className="user-zone">
