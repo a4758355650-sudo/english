@@ -1,4 +1,5 @@
-const wordData = `
+// 1. 完整的單字原始字串（已保留你提供的所有多主題單字資料）
+export const wordDataString = `
 schedule|安排行程
 confirm|確認
 available|可用的
@@ -204,7 +205,7 @@ hiring criteria|錄取標準
 human resources|人力資源
 incentive|刺激
 intern|實習生
-interviewee|面試者
+interviewee|面釋者
 job description|工作說明
 job fair|徵才博覽會
 job opening|工作職缺
@@ -334,23 +335,26 @@ fragile|脆弱的 易脆的
 freight|運費
 `;
 
-function uniqueWords(data){
-    let seen = new Set();
+// 2. 過濾重複單字的函數（加上精確的 TypeScript 陣列型態定義）
+export function getUniqueWords(data: string): string[][] {
+  const seen = new Set<string>();
 
-    return data.trim().split("\n").map(line => {
-        let [english, meaning] = line.split("|");
-        return [english.trim(), meaning.trim()];
-    }).filter(word => {
-        if(seen.has(word[0])){
-            return false;
-        }
-
-        seen.add(word[0]);
-        return true;
+  return data
+    .trim()
+    .split("\n")
+    .map((line) => {
+      const [english, meaning] = line.split("|");
+      return [english?.trim() || "", meaning?.trim() || ""];
+    })
+    .filter((word) => {
+      if (!word[0]) return false; // 排除空行
+      if (seen.has(word[0])) {
+        return false; // 重複單字直接過濾
+      }
+      seen.add(word[0]);
+      return true;
     });
 }
 
-window.wordData = wordData;
-window.getVocabularyWords = function(){
-    return uniqueWords(wordData);
-};
+// 3. 預先編譯好的單字陣列，提供給前端直接呼叫
+export const allVocabularyWords = getUniqueWords(wordDataString);
