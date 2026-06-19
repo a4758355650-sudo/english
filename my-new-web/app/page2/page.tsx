@@ -13,11 +13,10 @@ export default function Page2() {
   const [isAnswered, setIsAnswered] = useState(false);
   const [score, setScore] = useState(0);
   const [quizFinished, setQuizFinished] = useState(false);
-  const [questionCount, setQuestionCount] = useState(30);
+  const [questionCount, setQuestionCount] = useState<number | "all">(30);
   const [mode, setMode] = useState<"all" | "wrong">("all");
 
-  // 核心修改：初始化測驗，直接從 Firebase 獲取不熟悉單字
-  const initQuiz = useCallback(async (count: number, currentMode: "all" | "wrong") => {
+  const initQuiz = useCallback(async (count: number | "all", currentMode: "all" | "wrong") => {
     let sourceWords: string[][] = [];
 
     if (currentMode === "all") {
@@ -25,22 +24,23 @@ export default function Page2() {
     } else {
       const currentUser = auth.currentUser;
       if (currentUser) {
-        // 直接從 Page3 用的那個 collection 抓資料
         const snap = await getDocs(collection(db, "users", currentUser.uid, "wrongWords"));
-        snap.forEach((doc) => {
-          sourceWords.push([doc.id, doc.data().meaning]);
-        });
+        snap.forEach((doc) => { sourceWords.push([doc.id, doc.data().meaning]); });
       }
     }
 
     if (sourceWords.length === 0) {
-      alert(currentMode === "wrong" ? "目前沒有不熟悉單字！已自動切換回全部單字模式。" : "無單字資料。");
+      alert("該模式目前無可用單字");
       setMode("all");
       return;
     }
 
+    // 計算實際題數：如果是 "all" 就取全部長度
+    const finalCount = count === "all" ? sourceWords.length : Math.min(count, sourceWords.length);
+    
     const shuffled = [...sourceWords].sort(() => 0.5 - Math.random());
-    setQuizList(shuffled.slice(0, Math.min(count, shuffled.length)));
+    setQuizList(shuffled.slice(0, finalCount));
+    
     setCurrentQuizIndex(0);
     setScore(0);
     setQuizFinished(false);
@@ -53,7 +53,6 @@ export default function Page2() {
   useEffect(() => {
     if (quizList.length === 0 || quizFinished) return;
     const currentWord = quizList[currentQuizIndex];
-    // 選項生成：確保正確答案包含在內
     const others = allVocabularyWords.filter((w) => w[0] !== currentWord[0]);
     const wrongAnswers = others.sort(() => 0.5 - Math.random()).slice(0, 3).map(w => w[1]);
     setOptions([currentWord[1], ...wrongAnswers].sort(() => 0.5 - Math.random()));
@@ -70,7 +69,6 @@ export default function Page2() {
     if (opt === currentWord[1]) {
       setScore((prev) => prev + 1);
     } else {
-      // 答錯時自動加入/更新 Firebase 的不熟悉單字清單
       const currentUser = auth.currentUser;
       if (currentUser) {
         const userWrongDocRef = doc(db, "users", currentUser.uid, "wrongWords", currentWord[0]);
@@ -89,10 +87,13 @@ export default function Page2() {
                 <button className={`btn ${mode === "all" ? "active" : ""}`} onClick={() => setMode("all")}>📖 全部單字</button>
                 <button className={`btn ${mode === "wrong" ? "active" : ""}`} onClick={() => setMode("wrong")}>🎯 不熟悉單字</button>
               </div>
+              
               {currentQuizIndex === 0 && !isAnswered && (
                 <div style={{ display: "flex", justifyContent: "center", gap: 10 }}>
-                  {[10, 30, 50].map((num) => (
-                    <button key={num} className={`count-btn ${questionCount === num ? "active" : ""}`} onClick={() => setQuestionCount(num)}>{num} 題</button>
+                  {[10, 30, 50, "all"].map((num) => (
+                    <button key={num} className={`count-btn ${questionCount === num ? "active" : ""}`} onClick={() => setQuestionCount(num as number | "all")}>
+                      {num === "all" ? "全部" : `${num} 題`}
+                    </button>
                   ))}
                 </div>
               )}
