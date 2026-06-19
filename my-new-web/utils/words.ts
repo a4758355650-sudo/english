@@ -58,7 +58,7 @@ merchandise|商品
 renovate|翻新
 shortage|短缺
 venue|活動地點
-draw|提領
+withdraw|提領
 workshop|研討會
 administration|行政管理
 appoint|指派任命
