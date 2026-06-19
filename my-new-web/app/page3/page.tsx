@@ -20,7 +20,7 @@ export default function Page3() {
       const querySnapshot = await getDocs(collection(db, "users", uid, "wrongWords"));
       const data: Record<string, any> = {};
       querySnapshot.forEach((doc) => { data[doc.id] = doc.data(); });
-      
+
       setWrongWords(data);
       const keys = Object.keys(data);
       setCurrentKey(keys.length > 0 ? keys[Math.floor(Math.random() * keys.length)] : null);
@@ -54,20 +54,20 @@ export default function Page3() {
       .filter((w) => w[0] !== currentKey)
       .map((w) => w[1])
       .sort(() => 0.5 - Math.random()).slice(0, 3);
-    
+
     setOptions([rightAnswer, ...wrongAnswers].sort(() => 0.5 - Math.random()));
   }, [currentKey, wrongWords]);
 
   const handleOptionClick = async (opt: string) => {
     if (isAnswered || !currentKey || !auth.currentUser) return;
-    
-    setSelectedOption(opt); 
+
+    setSelectedOption(opt);
     setIsAnswered(true);
-    
+
     const uid = auth.currentUser.uid;
     const userWordDocRef = doc(db, "users", uid, "wrongWords", currentKey);
     const updated = { ...wrongWords };
-    
+
     if (opt === wrongWords[currentKey].meaning) {
       updated[currentKey].count -= 1;
       if (updated[currentKey].count <= 0) {
@@ -93,19 +93,23 @@ export default function Page3() {
         <h2>🎯 不熟悉單字雲端複習本</h2>
         {/* ... (其餘 UI 結構保持不變) ... */}
         {currentKey ? (
-           <div style={{ background: "#fffbeb", padding: "20px", borderRadius: "12px" }}>
-             <div style={{ textAlign: "right" }}>還需答對：{wrongWords[currentKey].count} 次</div>
-             <div style={{ fontSize: "2rem", fontWeight: "bold", textAlign: "center", margin: "20px 0" }}>{currentKey}</div>
-             <div className="options-grid">
-               {options.map((opt, i) => (
-                 <button key={i} className={`opt-btn ${isAnswered ? (opt === wrongWords[currentKey].meaning ? "correct" : selectedOption === opt ? "wrong" : "") : ""}`} 
-                   onClick={() => handleOptionClick(opt)} disabled={isAnswered}>
-                   {opt}
-                 </button>
-               ))}
-             </div>
-             {isAnswered && <button className="btn" style={{ width: "100%", marginTop: "20px" }} onClick={() => auth.currentUser && loadWrongWords(auth.currentUser.uid)}>下一題 ➡️</button>}
-           </div>
+          <div style={{ background: "#fffbeb", padding: "20px", borderRadius: "12px" }}>
+            {wrongWords[currentKey] && (
+              <div style={{ textAlign: "right", fontSize: "0.9rem", color: "#b45309" }}>
+                還需答對：{wrongWords[currentKey]?.count ?? 0} 次
+              </div>
+            )}
+            <div style={{ fontSize: "2rem", fontWeight: "bold", textAlign: "center", margin: "20px 0" }}>{currentKey}</div>
+            <div className="options-grid">
+              {options.map((opt, i) => (
+                <button key={i} className={`opt-btn ${isAnswered ? (opt === wrongWords[currentKey].meaning ? "correct" : selectedOption === opt ? "wrong" : "") : ""}`}
+                  onClick={() => handleOptionClick(opt)} disabled={isAnswered}>
+                  {opt}
+                </button>
+              ))}
+            </div>
+            {isAnswered && <button className="btn" style={{ width: "100%", marginTop: "20px" }} onClick={() => auth.currentUser && loadWrongWords(auth.currentUser.uid)}>下一題 ➡️</button>}
+          </div>
         ) : <p style={{ textAlign: "center", padding: "40px 0" }}>👏 目前沒有錯題！</p>}
         {/* ... (下方清單區塊保持不變) ... */}
       </div>
