@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { allVocabularyWords } from "@/utils/words";
 import { auth, db } from "@/utils/firebase";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, collection, getDocs } from "firebase/firestore";
 
 export default function Page2() {
   const [quizList, setQuizList] = useState<string[][]>([]);
@@ -14,37 +14,63 @@ export default function Page2() {
   const [score, setScore] = useState(0);
   const [quizFinished, setQuizFinished] = useState(false);
   const [questionCount, setQuestionCount] = useState(30);
+  const [mode, setMode] = useState<"all" | "wrong">("all");
 
-  const initQuiz = useCallback((count: number) => {
-    const shuffled = [...allVocabularyWords].sort(() => 0.5 - Math.random());
+  // 核心修改：初始化測驗，直接從 Firebase 獲取不熟悉單字
+  const initQuiz = useCallback(async (count: number, currentMode: "all" | "wrong") => {
+    let sourceWords: string[][] = [];
+
+    if (currentMode === "all") {
+      sourceWords = [...allVocabularyWords];
+    } else {
+      const currentUser = auth.currentUser;
+      if (currentUser) {
+        // 直接從 Page3 用的那個 collection 抓資料
+        const snap = await getDocs(collection(db, "users", currentUser.uid, "wrongWords"));
+        snap.forEach((doc) => {
+          sourceWords.push([doc.id, doc.data().meaning]);
+        });
+      }
+    }
+
+    if (sourceWords.length === 0) {
+      alert(currentMode === "wrong" ? "目前沒有不熟悉單字！已自動切換回全部單字模式。" : "無單字資料。");
+      setMode("all");
+      return;
+    }
+
+    const shuffled = [...sourceWords].sort(() => 0.5 - Math.random());
     setQuizList(shuffled.slice(0, Math.min(count, shuffled.length)));
-    setCurrentQuizIndex(0); 
-    setScore(0); 
-    setQuizFinished(false); 
-    setIsAnswered(false); 
+    setCurrentQuizIndex(0);
+    setScore(0);
+    setQuizFinished(false);
+    setIsAnswered(false);
     setSelectedOption(null);
   }, []);
 
-  useEffect(() => { initQuiz(30); }, [initQuiz]);
+  useEffect(() => { initQuiz(questionCount, mode); }, [initQuiz, questionCount, mode]);
 
   useEffect(() => {
     if (quizList.length === 0 || quizFinished) return;
     const currentWord = quizList[currentQuizIndex];
-    const wrongAnswers = allVocabularyWords
-      .filter((w) => w[0] !== currentWord[0]).map((w) => w[1])
-      .sort(() => 0.5 - Math.random()).slice(0, 3);
+    // 選項生成：確保正確答案包含在內
+    const others = allVocabularyWords.filter((w) => w[0] !== currentWord[0]);
+    const wrongAnswers = others.sort(() => 0.5 - Math.random()).slice(0, 3).map(w => w[1]);
     setOptions([currentWord[1], ...wrongAnswers].sort(() => 0.5 - Math.random()));
-    setSelectedOption(null); setIsAnswered(false);
+    setSelectedOption(null);
+    setIsAnswered(false);
   }, [quizList, currentQuizIndex, quizFinished]);
 
   const handleOptionClick = async (opt: string) => {
     if (isAnswered) return;
-    setSelectedOption(opt); setIsAnswered(true);
+    setSelectedOption(opt);
+    setIsAnswered(true);
     const currentWord = quizList[currentQuizIndex];
 
     if (opt === currentWord[1]) {
       setScore((prev) => prev + 1);
     } else {
+      // 答錯時自動加入/更新 Firebase 的不熟悉單字清單
       const currentUser = auth.currentUser;
       if (currentUser) {
         const userWrongDocRef = doc(db, "users", currentUser.uid, "wrongWords", currentWord[0]);
@@ -53,32 +79,26 @@ export default function Page2() {
     }
   };
 
-  if (quizList.length === 0 && !quizFinished) return <div style={{ textAlign: "center", padding: 50 }}>載入中...</div>;
-
   return (
     <main style={{ width: "min(700px, calc(100% - 32px))", margin: "40px auto" }}>
       <div className="shell">
         {!quizFinished ? (
           <div>
-            {currentQuizIndex === 0 && !isAnswered && (
-              <div style={{ textAlign: "center", marginBottom: 25 }}>
-                <p style={{ fontWeight: 800, marginBottom: 10 }}>請選擇測驗題數：</p>
+            <div style={{ textAlign: "center", marginBottom: 20 }}>
+              <div className="btn-group" style={{ marginBottom: 15 }}>
+                <button className={`btn ${mode === "all" ? "active" : ""}`} onClick={() => setMode("all")}>📖 全部單字</button>
+                <button className={`btn ${mode === "wrong" ? "active" : ""}`} onClick={() => setMode("wrong")}>🎯 不熟悉單字</button>
+              </div>
+              {currentQuizIndex === 0 && !isAnswered && (
                 <div style={{ display: "flex", justifyContent: "center", gap: 10 }}>
                   {[10, 30, 50].map((num) => (
-                    <button key={num} className={`count-btn ${questionCount === num ? "active" : ""}`} onClick={() => { setQuestionCount(num); initQuiz(num); }}>
-                      {num} 題
-                    </button>
+                    <button key={num} className={`count-btn ${questionCount === num ? "active" : ""}`} onClick={() => setQuestionCount(num)}>{num} 題</button>
                   ))}
                 </div>
-              </div>
-            )}
-            
-            <div style={{ display: "flex", justifyContent: "space-between", background: "#e7f0ef", padding: 15, borderRadius: 8, marginBottom: 20 }}>
-              <div>題目：<strong>{currentQuizIndex + 1}</strong> / {quizList.length}</div>
-              <div>得分：<strong>{score}</strong></div>
+              )}
             </div>
             
-            <div className="q-title">{quizList[currentQuizIndex][0]}</div>
+            <div className="q-title" style={{ fontSize: "2rem", textAlign: "center", margin: "20px 0" }}>{quizList[currentQuizIndex]?.[0]}</div>
             
             <div className="options-grid">
               {options.map((opt, i) => (
@@ -89,16 +109,15 @@ export default function Page2() {
             </div>
             
             {isAnswered && (
-              <button style={{ display: "block", width: "100%", padding: "12px", background: "#000", color: "#fff", border: "none", borderRadius: 8, cursor: "pointer", fontWeight: 800, marginTop: 20 }} 
-                onClick={() => currentQuizIndex === quizList.length - 1 ? setQuizFinished(true) : setCurrentQuizIndex((p) => p + 1)}>
+              <button className="btn" style={{ width: "100%", marginTop: 20 }} onClick={() => currentQuizIndex === quizList.length - 1 ? setQuizFinished(true) : setCurrentQuizIndex((p) => p + 1)}>
                 下一題 ➡️
               </button>
             )}
           </div>
         ) : (
           <div style={{ textAlign: "center", padding: 40 }}>
-            <h2>🎉 測驗完成！分數：{score} / {quizList.length}</h2>
-            <button style={{ padding: "10px 20px", background: "#000", color: "#fff", border: "none", borderRadius: 8, cursor: "pointer", fontWeight: 800, marginTop: 20 }} onClick={() => initQuiz(questionCount)}>再挑戰一次</button>
+            <h2>🎉 測驗完成！得分：{score} / {quizList.length}</h2>
+            <button className="btn" style={{ marginTop: 20 }} onClick={() => initQuiz(questionCount, mode)}>再挑戰一次</button>
           </div>
         )}
       </div>
