@@ -29,7 +29,7 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
   return (
     <>
       <style>{`
-        .global-nav { background: #12343b; padding: 14px 24px; display: flex; gap: 4px; align-items: center; box-shadow: 0 8px 28px rgba(18, 52, 59, 0.18); }
+        .global-nav { background: #9891c0; padding: 14px 24px; display: flex; gap: 4px; align-items: center; box-shadow: 0 8px 28px rgba(18, 52, 59, 0.18); }
         .nav-link { color: #eef7f6; text-decoration: none; padding: 9px 12px; border-radius: 6px; font-size: 14px; font-weight: bold; transition: all 0.15s; }
         .nav-link:hover { background: rgba(255, 255, 255, 0.15); color: white; }
         .nav-brand { margin-right: auto; color: white; font-size: 16px; font-weight: bold; padding-right: 20px; }
