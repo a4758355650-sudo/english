@@ -343,6 +343,35 @@ packing list|裝箱單
 parcel|包裹
 payment in advance|預先付款
 price war|價格戰
+purchase|購買
+quantity|數量
+rebate|折扣
+receipt|收據
+refund|退款
+restock|補貨
+run|經營
+rush order|急件 緊急訂單
+scan|掃描
+shipment|出貨
+subtract|減掉
+supply|供應
+surcharge|額外費用
+term|條件
+throw in|扔進去
+transfer inventory|調貨
+vendor|供應商
+verify|確認
+warranty|保證書
+apology|道歉
+dialogue|對白
+logic|邏輯
+technology|科技 技術
+trilogy|三部曲
+account|帳戶
+accounting|會計 結帳
+asset|資產
+audit|查帳
+balance|結餘
 `;
 
 // 2. 過濾重複單字的函數（加上精確的 TypeScript 陣列型態定義）
