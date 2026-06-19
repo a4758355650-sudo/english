@@ -6,7 +6,7 @@ import { auth, db } from "@/utils/firebase";
 import { doc, setDoc, collection, getDocs } from "firebase/firestore";
 import { speak } from "@/utils/tts"; 
 
-// Fisher-Yates 洗牌演算法
+// Fisher-Yates 洗牌演算法：確保絕對隨機
 const shuffleArray = <T,>(array: T[]): T[] => {
   const newArray = [...array];
   for (let i = newArray.length - 1; i > 0; i--) {
@@ -47,7 +47,6 @@ export default function Page2() {
       return;
     }
 
-    // 使用洗牌演算法隨機化題目順序
     const shuffledSource = shuffleArray(sourceWords);
     const finalCount = count === "all" ? shuffledSource.length : Math.min(count, shuffledSource.length);
     
@@ -59,19 +58,21 @@ export default function Page2() {
     setSelectedOption(null);
   }, []);
 
+  // 當測驗初始化完成，監聽題目變更自動發音
+  useEffect(() => {
+    if (quizList.length > 0 && quizList[currentQuizIndex]) {
+      speak(quizList[currentQuizIndex][0]);
+    }
+  }, [currentQuizIndex, quizList]);
+
   useEffect(() => { initQuiz(questionCount, mode); }, [initQuiz, questionCount, mode]);
 
   useEffect(() => {
     if (quizList.length === 0 || quizFinished) return;
     const currentWord = quizList[currentQuizIndex];
-    
-    // 隨機選出 3 個錯誤選項
     const others = allVocabularyWords.filter((w) => w[0] !== currentWord[0]);
     const wrongAnswers = shuffleArray(others).slice(0, 3).map(w => w[1]);
-    
-    // 將正確答案與錯誤選項混合後再次洗牌
     setOptions(shuffleArray([currentWord[1], ...wrongAnswers]));
-    
     setSelectedOption(null);
     setIsAnswered(false);
   }, [quizList, currentQuizIndex, quizFinished]);

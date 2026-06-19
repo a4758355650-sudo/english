@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { allVocabularyWords } from "@/utils/words";
 import { speak } from "@/utils/tts"; // 匯入發音工具
 
@@ -10,6 +10,11 @@ export default function Page1() {
 
   const totalWords = allVocabularyWords.length;
   const currentWord = allVocabularyWords[currentIndex] || ["", ""];
+
+  // 當 currentIndex 改變時，自動呼叫 speak 播放當前單字
+  useEffect(() => {
+    speak(currentWord[0]);
+  }, [currentIndex, currentWord]);
 
   return (
     <main style={{ maxWidth: "700px", margin: "40px auto", padding: "0 20px" }}>
@@ -21,7 +26,7 @@ export default function Page1() {
         <div className="flashcard" style={{ padding: "40px 20px", margin: "20px 0", textAlign: "center" }}>
           <div style={{ fontSize: "2.5rem", fontWeight: "bold", marginBottom: "15px" }}>
             {currentWord[0]}
-            {/* 發音按鈕 */}
+            {/* 發音按鈕（手動重播用） */}
             <button 
               onClick={() => speak(currentWord[0])}
               style={{ marginLeft: "15px", cursor: "pointer", background: "transparent", border: "none", fontSize: "1.8rem" }}
