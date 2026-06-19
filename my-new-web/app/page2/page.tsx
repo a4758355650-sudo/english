@@ -4,7 +4,17 @@ import { useEffect, useState, useCallback } from "react";
 import { allVocabularyWords } from "@/utils/words";
 import { auth, db } from "@/utils/firebase";
 import { doc, setDoc, collection, getDocs } from "firebase/firestore";
-import { speak } from "@/utils/tts"; // 匯入發音工具
+import { speak } from "@/utils/tts"; 
+
+// Fisher-Yates 洗牌演算法
+const shuffleArray = <T,>(array: T[]): T[] => {
+  const newArray = [...array];
+  for (let i = newArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+  }
+  return newArray;
+};
 
 export default function Page2() {
   const [quizList, setQuizList] = useState<string[][]>([]);
@@ -37,10 +47,11 @@ export default function Page2() {
       return;
     }
 
-    const finalCount = count === "all" ? sourceWords.length : Math.min(count, sourceWords.length);
-    const shuffled = [...sourceWords].sort(() => 0.5 - Math.random());
+    // 使用洗牌演算法隨機化題目順序
+    const shuffledSource = shuffleArray(sourceWords);
+    const finalCount = count === "all" ? shuffledSource.length : Math.min(count, shuffledSource.length);
     
-    setQuizList(shuffled.slice(0, finalCount));
+    setQuizList(shuffledSource.slice(0, finalCount));
     setCurrentQuizIndex(0);
     setScore(0);
     setQuizFinished(false);
@@ -53,9 +64,14 @@ export default function Page2() {
   useEffect(() => {
     if (quizList.length === 0 || quizFinished) return;
     const currentWord = quizList[currentQuizIndex];
+    
+    // 隨機選出 3 個錯誤選項
     const others = allVocabularyWords.filter((w) => w[0] !== currentWord[0]);
-    const wrongAnswers = others.sort(() => 0.5 - Math.random()).slice(0, 3).map(w => w[1]);
-    setOptions([currentWord[1], ...wrongAnswers].sort(() => 0.5 - Math.random()));
+    const wrongAnswers = shuffleArray(others).slice(0, 3).map(w => w[1]);
+    
+    // 將正確答案與錯誤選項混合後再次洗牌
+    setOptions(shuffleArray([currentWord[1], ...wrongAnswers]));
+    
     setSelectedOption(null);
     setIsAnswered(false);
   }, [quizList, currentQuizIndex, quizFinished]);
@@ -107,7 +123,6 @@ export default function Page2() {
               <div>進度：<strong>{currentQuizIndex + 1} / {quizList.length}</strong></div>
             </div>
             
-            {/* 題目顯示與發音按鈕 */}
             <div className="q-title" style={{ fontSize: "2.5rem", textAlign: "center", margin: "30px 0", fontWeight: "bold" }}>
               {quizList[currentQuizIndex]?.[0]}
               <button 
