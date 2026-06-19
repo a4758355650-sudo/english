@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import { allVocabularyWords } from "@/utils/words";
 import { auth, db } from "@/utils/firebase";
 import { doc, setDoc, collection, getDocs } from "firebase/firestore";
+import { speak } from "@/utils/tts"; // 匯入發音工具
 
 export default function Page2() {
   const [quizList, setQuizList] = useState<string[][]>([]);
@@ -14,7 +15,6 @@ export default function Page2() {
   const [score, setScore] = useState(0);
   const [quizFinished, setQuizFinished] = useState(false);
   
-  // 狀態：題數 (數字或 "all") 與 模式
   const [questionCount, setQuestionCount] = useState<number | "all">(30);
   const [mode, setMode] = useState<"all" | "wrong">("all");
 
@@ -48,7 +48,6 @@ export default function Page2() {
     setSelectedOption(null);
   }, []);
 
-  // 當使用者變更模式或題數時，自動重新載入
   useEffect(() => { initQuiz(questionCount, mode); }, [initQuiz, questionCount, mode]);
 
   useEffect(() => {
@@ -83,7 +82,6 @@ export default function Page2() {
       <div className="shell">
         {!quizFinished ? (
           <div>
-            {/* 控制面板：切換模式與選擇題數 */}
             <div style={{ textAlign: "center", marginBottom: 30, background: "#f4f4f4", padding: "20px", borderRadius: "12px" }}>
               <div style={{ marginBottom: 15 }}>
                 <button className={`btn ${mode === "all" ? "active" : "btn-secondary"}`} onClick={() => setMode("all")}>📖 全部單字</button>
@@ -104,13 +102,22 @@ export default function Page2() {
               )}
             </div>
             
-            {/* 題目資訊顯示 */}
             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 20, fontSize: "1.1rem" }}>
               <div>範圍：<strong>{mode === "all" ? "全部單字" : "不熟悉單字"}</strong></div>
               <div>進度：<strong>{currentQuizIndex + 1} / {quizList.length}</strong></div>
             </div>
             
-            <div className="q-title" style={{ fontSize: "2.5rem", textAlign: "center", margin: "30px 0", fontWeight: "bold" }}>{quizList[currentQuizIndex]?.[0]}</div>
+            {/* 題目顯示與發音按鈕 */}
+            <div className="q-title" style={{ fontSize: "2.5rem", textAlign: "center", margin: "30px 0", fontWeight: "bold" }}>
+              {quizList[currentQuizIndex]?.[0]}
+              <button 
+                onClick={() => speak(quizList[currentQuizIndex][0])}
+                style={{ marginLeft: "15px", cursor: "pointer", background: "transparent", border: "none", fontSize: "1.8rem" }}
+                title="播放發音"
+              >
+                🔊
+              </button>
+            </div>
             
             <div className="options-grid">
               {options.map((opt, i) => (
