@@ -13,6 +13,8 @@ export default function Page2() {
   const [isAnswered, setIsAnswered] = useState(false);
   const [score, setScore] = useState(0);
   const [quizFinished, setQuizFinished] = useState(false);
+  
+  // 狀態：題數 (數字或 "all") 與 模式
   const [questionCount, setQuestionCount] = useState<number | "all">(30);
   const [mode, setMode] = useState<"all" | "wrong">("all");
 
@@ -35,12 +37,10 @@ export default function Page2() {
       return;
     }
 
-    // 計算實際題數：如果是 "all" 就取全部長度
     const finalCount = count === "all" ? sourceWords.length : Math.min(count, sourceWords.length);
-    
     const shuffled = [...sourceWords].sort(() => 0.5 - Math.random());
-    setQuizList(shuffled.slice(0, finalCount));
     
+    setQuizList(shuffled.slice(0, finalCount));
     setCurrentQuizIndex(0);
     setScore(0);
     setQuizFinished(false);
@@ -48,6 +48,7 @@ export default function Page2() {
     setSelectedOption(null);
   }, []);
 
+  // 當使用者變更模式或題數時，自動重新載入
   useEffect(() => { initQuiz(questionCount, mode); }, [initQuiz, questionCount, mode]);
 
   useEffect(() => {
@@ -82,24 +83,34 @@ export default function Page2() {
       <div className="shell">
         {!quizFinished ? (
           <div>
-            <div style={{ textAlign: "center", marginBottom: 20 }}>
-              <div className="btn-group" style={{ marginBottom: 15 }}>
-                <button className={`btn ${mode === "all" ? "active" : ""}`} onClick={() => setMode("all")}>📖 全部單字</button>
-                <button className={`btn ${mode === "wrong" ? "active" : ""}`} onClick={() => setMode("wrong")}>🎯 不熟悉單字</button>
+            {/* 控制面板：切換模式與選擇題數 */}
+            <div style={{ textAlign: "center", marginBottom: 30, background: "#f4f4f4", padding: "20px", borderRadius: "12px" }}>
+              <div style={{ marginBottom: 15 }}>
+                <button className={`btn ${mode === "all" ? "active" : "btn-secondary"}`} onClick={() => setMode("all")}>📖 全部單字</button>
+                <button className={`btn ${mode === "wrong" ? "active" : "btn-secondary"}`} onClick={() => setMode("wrong")} style={{ marginLeft: 10 }}>🎯 不熟悉單字</button>
               </div>
               
               {currentQuizIndex === 0 && !isAnswered && (
-                <div style={{ display: "flex", justifyContent: "center", gap: 10 }}>
-                  {[10, 30, 50, "all"].map((num) => (
-                    <button key={num} className={`count-btn ${questionCount === num ? "active" : ""}`} onClick={() => setQuestionCount(num as number | "all")}>
-                      {num === "all" ? "全部" : `${num} 題`}
-                    </button>
-                  ))}
+                <div>
+                  <p style={{ fontWeight: "bold", fontSize: "14px", marginBottom: "10px" }}>選擇測驗題數：</p>
+                  <div style={{ display: "flex", justifyContent: "center", gap: 10 }}>
+                    {[10, 30, 50, "all"].map((num) => (
+                      <button key={num} className={`count-btn ${questionCount === num ? "active" : ""}`} onClick={() => setQuestionCount(num as number | "all")}>
+                        {num === "all" ? "全部" : `${num} 題`}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
             
-            <div className="q-title" style={{ fontSize: "2rem", textAlign: "center", margin: "20px 0" }}>{quizList[currentQuizIndex]?.[0]}</div>
+            {/* 題目資訊顯示 */}
+            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 20, fontSize: "1.1rem" }}>
+              <div>範圍：<strong>{mode === "all" ? "全部單字" : "不熟悉單字"}</strong></div>
+              <div>進度：<strong>{currentQuizIndex + 1} / {quizList.length}</strong></div>
+            </div>
+            
+            <div className="q-title" style={{ fontSize: "2.5rem", textAlign: "center", margin: "30px 0", fontWeight: "bold" }}>{quizList[currentQuizIndex]?.[0]}</div>
             
             <div className="options-grid">
               {options.map((opt, i) => (
@@ -110,14 +121,15 @@ export default function Page2() {
             </div>
             
             {isAnswered && (
-              <button className="btn" style={{ width: "100%", marginTop: 20 }} onClick={() => currentQuizIndex === quizList.length - 1 ? setQuizFinished(true) : setCurrentQuizIndex((p) => p + 1)}>
-                下一題 ➡️
+              <button className="btn" style={{ width: "100%", marginTop: 30, padding: "15px" }} onClick={() => currentQuizIndex === quizList.length - 1 ? setQuizFinished(true) : setCurrentQuizIndex((p) => p + 1)}>
+                {currentQuizIndex === quizList.length - 1 ? "查看結果" : "下一題 ➡️"}
               </button>
             )}
           </div>
         ) : (
-          <div style={{ textAlign: "center", padding: 40 }}>
-            <h2>🎉 測驗完成！得分：{score} / {quizList.length}</h2>
+          <div style={{ textAlign: "center", padding: 60, background: "#fff", border: "1px solid #ddd" }}>
+            <h2>🎉 測驗完成！</h2>
+            <p style={{ fontSize: "1.5rem" }}>最終得分：{score} / {quizList.length}</p>
             <button className="btn" style={{ marginTop: 20 }} onClick={() => initQuiz(questionCount, mode)}>再挑戰一次</button>
           </div>
         )}
