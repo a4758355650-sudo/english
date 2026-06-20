@@ -71,3 +71,25 @@ body { margin: 0; padding: 0; background-color: #fdfcf9; font-family: sans-serif
   justify-content: center; 
   gap: 15px; 
 }
+/* 確保選取狀態有明顯的亮起效果 */
+.btn { 
+  padding: 10px 20px; 
+  background: #f1f5f9; /* 未選取時灰底 */
+  color: #334155; 
+  border: 1px solid #cbd5e1;
+  border-radius: 8px; 
+  cursor: pointer; 
+  font-weight: 600; 
+  transition: all 0.2s;
+  margin: 4px;
+}
+
+.btn.active { 
+  background: #000; /* 選取時變黑 */
+  color: #fff; 
+  border-color: #000;
+}
+
+.btn:hover:not(.active) { 
+  background: #e2e8f0; 
+}

@@ -9,21 +9,16 @@ export default function Page1() {
   const router = useRouter();
   const searchParams = useSearchParams();
   
-  // 從網址讀取目前組別，預設為 "全部"
   const selectedGroup = searchParams.get("group") || "全部";
   
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showMeaning, setShowMeaning] = useState(true);
   const [isReverse, setIsReverse] = useState(false);
 
-  // 產生分組按鈕清單
   const groupButtons = ["全部", ...Array.from({ length: getTotalGroups() }, (_, i) => getGroupName(i * WORDS_PER_GROUP))];
 
-  // 自動過濾單字
   const filteredWords = useMemo(() => {
     if (selectedGroup === "全部") return allVocabularyWords;
-    
-    // 解析組別數字
     const groupNum = parseInt(selectedGroup.replace("第 ", "").replace(" 組", ""));
     const startIndex = (groupNum - 1) * WORDS_PER_GROUP;
     return allVocabularyWords.slice(startIndex, startIndex + WORDS_PER_GROUP);
@@ -31,7 +26,6 @@ export default function Page1() {
 
   const totalWords = filteredWords.length;
 
-  // 切換分組或重整時，索引歸零並更新網址
   const handleGroupChange = (group: string) => {
     setCurrentIndex(0);
     router.push(`?group=${encodeURIComponent(group)}`);
@@ -49,20 +43,19 @@ export default function Page1() {
   }, [currentIndex, isReverse, currentWord, selectedGroup]);
 
   return (
-    <main style={{ maxWidth: "700px", margin: "40px auto", padding: "0 20px" }}>
-      <div className="shell" style={{ padding: "40px" }}>
-        <h2>📖 全部單字地毯式複習</h2>
+    <main>
+      <div className="shell">
+        <h2 style={{ textAlign: "center", marginBottom: "30px" }}>📖 全部單字地毯式複習</h2>
         
-        {/* 自動生成的組別按鈕 */}
-        <div style={{ marginBottom: "20px", textAlign: "center" }}>
-          <p style={{ fontWeight: "bold", fontSize: "14px" }}>選擇單字分組：</p>
+        {/* 組別按鈕區域：統一使用 .btn 類別，選中時加上 .active */}
+        <div style={{ marginBottom: "30px", textAlign: "center" }}>
+          <p style={{ fontWeight: "bold", fontSize: "14px", color: "#64748b", marginBottom: "10px" }}>選擇單字分組：</p>
           <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "8px" }}>
             {groupButtons.map((groupName) => (
               <button 
                 key={groupName} 
-                className={`btn ${selectedGroup === groupName ? "active" : "btn-secondary"}`} 
+                className={`btn ${selectedGroup === groupName ? "active" : ""}`} 
                 onClick={() => handleGroupChange(groupName)}
-                style={{ padding: "6px 12px", fontSize: "12px" }}
               >
                 {groupName}
               </button>
@@ -70,15 +63,17 @@ export default function Page1() {
           </div>
         </div>
 
-        <div style={{ marginBottom: "15px" }}>
+        <div style={{ textAlign: "center", marginBottom: "20px" }}>
           <button className="btn" onClick={() => { setIsReverse(!isReverse); setCurrentIndex(0); }}>
-            {isReverse ? "🔄 目前模式：倒序 (後面往前面)" : "🔄 目前模式：正序 (前面往後面)"}
+            {isReverse ? "🔄 目前模式：倒序" : "🔄 目前模式：正序"}
           </button>
         </div>
 
-        <p>當前分組：<strong>{selectedGroup}</strong> | 進度：<strong>{currentIndex + 1}</strong> / {totalWords}</p>
+        <p style={{ textAlign: "center", color: "#475569" }}>
+          當前分組：<strong>{selectedGroup}</strong> | 進度：<strong>{currentIndex + 1}</strong> / {totalWords}
+        </p>
 
-        <div className="flashcard" style={{ padding: "40px 20px", margin: "20px 0", textAlign: "center" }}>
+        <div className="flashcard" style={{ padding: "40px 20px", margin: "20px 0" }}>
           <div style={{ fontSize: "2.5rem", fontWeight: "bold", marginBottom: "15px" }}>
             {currentWord[0]}
             <button onClick={() => speak(currentWord[0])} style={{ marginLeft: "15px", cursor: "pointer", background: "transparent", border: "none", fontSize: "1.8rem" }}>🔊</button>

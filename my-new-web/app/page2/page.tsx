@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { allVocabularyWords, WORDS_PER_GROUP, getGroupName, getTotalGroups } from "@/utils/words";
 import { auth, db } from "@/utils/firebase";
-import { doc, setDoc, collection, getDocs, getDoc, updateDoc, deleteDoc, increment } from "firebase/firestore";
+import { doc, setDoc, getDoc, updateDoc, deleteDoc, increment, collection, getDocs } from "firebase/firestore";
 import { speak } from "@/utils/tts";
 
 const shuffleArray = <T,>(array: T[]): T[] => {
@@ -50,7 +50,7 @@ export default function Page2() {
       }
     }
 
-    if (sourceWords.length === 0) { alert("無可用單字"); return; }
+    if (sourceWords.length === 0) { alert("該條件下目前無可用單字"); return; }
     
     const shuffled = shuffleArray(sourceWords);
     const finalCount = count === "all" ? shuffled.length : Math.min(count as number, shuffled.length);
@@ -95,56 +95,60 @@ export default function Page2() {
 
     if (isCorrect) {
       setScore(p => p + 1);
-      // 若在「不熟悉單字」模式下，執行答對三次移除邏輯
       if (userId && mode === "wrong") {
         const docRef = doc(db, "users", userId, "wrongWords", currentWord[0]);
         const snap = await getDoc(docRef);
         if (snap.exists()) {
           const currentCount = snap.data().count || 0;
-          if (currentCount >= 2) await deleteDoc(docRef); // 達標移除
-          else await updateDoc(docRef, { count: increment(1) }); // 累加
+          if (currentCount >= 2) await deleteDoc(docRef);
+          else await updateDoc(docRef, { count: increment(1) });
         }
       }
-    } else {
-      // 答錯存入，並重置計數為 0
-      if (userId) {
-        await setDoc(doc(db, "users", userId, "wrongWords", currentWord[0]), { 
-          meaning: currentWord[1], 
-          count: 0 
-        }, { merge: true });
-      }
+    } else if (userId) {
+      await setDoc(doc(db, "users", userId, "wrongWords", currentWord[0]), { meaning: currentWord[1], count: 0 }, { merge: true });
     }
   };
 
   return (
-    <main style={{ maxWidth: "700px", margin: "40px auto", padding: "0 20px" }}>
-      <div className="shell" style={{ padding: "20px" }}>
+    <main>
+      <div className="shell">
         {!quizFinished ? (
           <div>
-            <div style={{ textAlign: "center", marginBottom: 20 }}>
-              <button className={`btn ${mode === "all" ? "active" : ""}`} onClick={() => handleConfigChange("all", selectedGroup, questionCount)}>📖 全部單字</button>
-              <button className={`btn ${mode === "wrong" ? "active" : ""}`} onClick={() => handleConfigChange("wrong", selectedGroup, questionCount)} style={{ marginLeft: 10 }}>🎯 不熟悉單字</button>
+            <div style={{ textAlign: "center", marginBottom: 30 }}>
+              <div className="btn-group" style={{ marginBottom: 20 }}>
+                <button className={`btn ${mode === "all" ? "active" : ""}`} onClick={() => handleConfigChange("all", selectedGroup, questionCount)}>📖 全部單字</button>
+                <button className={`btn ${mode === "wrong" ? "active" : ""}`} onClick={() => handleConfigChange("wrong", selectedGroup, questionCount)}>🎯 不熟悉單字</button>
+              </div>
+              
               {mode === "all" && (
-                <div style={{ marginTop: 10 }}>
-                  <p>選擇分組：</p>
-                  {groupButtons.map(g => (
-                    <button key={g} className={`btn ${selectedGroup === g ? "active" : ""}`} onClick={() => handleConfigChange("all", g, questionCount)} style={{ margin: "2px" }}>{g}</button>
-                  ))}
+                <div style={{ marginBottom: 20 }}>
+                  <p style={{ fontSize: "0.9rem", color: "#64748b", marginBottom: 10 }}>選擇分組：</p>
+                  <div className="btn-group" style={{ flexWrap: "wrap" }}>
+                    {groupButtons.map(g => (
+                      <button key={g} className={`btn ${selectedGroup === g ? "active" : ""}`} onClick={() => handleConfigChange("all", g, questionCount)}>{g}</button>
+                    ))}
+                  </div>
                 </div>
               )}
-              <div style={{ marginTop: 10 }}>
-                <p>選擇題數：</p>
-                {[10, 30, 50, "all"].map(num => (
-                  <button key={num} className={`btn ${questionCount === num ? "active" : ""}`} onClick={() => handleConfigChange(mode, selectedGroup, num as number | "all")} style={{ margin: "2px" }}>{num === "all" ? "全部" : `${num} 題`}</button>
-                ))}
+              
+              <div>
+                <p style={{ fontSize: "0.9rem", color: "#64748b", marginBottom: 10 }}>選擇題數：</p>
+                <div className="btn-group">
+                  {[10, 30, 50, "all"].map(num => (
+                    <button key={num} className={`btn ${questionCount === num ? "active" : ""}`} onClick={() => handleConfigChange(mode, selectedGroup, num as number | "all")}>
+                      {num === "all" ? "全部" : `${num} 題`}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
 
-            <div style={{ textAlign: "center", fontWeight: "bold", fontSize: "1.2rem" }}>
+            <div style={{ textAlign: "center", fontWeight: "bold", color: "#475569", marginBottom: 20 }}>
               範圍：{mode === "all" ? selectedGroup : "不熟悉單字"} | 進度：{currentQuizIndex + 1} / {quizList.length}
             </div>
 
-            <div style={{ fontSize: "2.5rem", textAlign: "center", margin: "20px 0" }}>{quizList[currentQuizIndex]?.[0]}</div>
+            <div className="q-title">{quizList[currentQuizIndex]?.[0]}</div>
+            
             <div className="options-grid">
               {options.map((opt, i) => (
                 <button key={i} className={`opt-btn ${isAnswered ? (opt === quizList[currentQuizIndex][1] ? "correct" : "wrong") : ""}`} onClick={() => handleOptionClick(opt)} disabled={isAnswered}>{opt}</button>
@@ -152,14 +156,16 @@ export default function Page2() {
             </div>
 
             {isAnswered && (
-              <button className="btn" style={{ width: "100%", marginTop: 20 }} onClick={() => currentQuizIndex === quizList.length - 1 ? setQuizFinished(true) : setCurrentQuizIndex(p => p + 1)}>
-                {currentQuizIndex === quizList.length - 1 ? "查看結果" : "下一題 ➡️"}
-              </button>
+              <div style={{ textAlign: "center", marginTop: 30 }}>
+                <button className="btn" onClick={() => currentQuizIndex === quizList.length - 1 ? setQuizFinished(true) : setCurrentQuizIndex(p => p + 1)}>
+                  {currentQuizIndex === quizList.length - 1 ? "查看結果" : "下一題 ➡️"}
+                </button>
+              </div>
             )}
           </div>
         ) : (
           <div style={{ textAlign: "center" }}>
-            <h2>🎉 完成！得分：{score} / {quizList.length}</h2>
+            <h2>🎉 測驗完成！得分：{score} / {quizList.length}</h2>
             <button className="btn" onClick={() => initQuiz(questionCount, mode, selectedGroup)}>再挑戰一次</button>
           </div>
         )}
