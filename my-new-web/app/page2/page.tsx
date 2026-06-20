@@ -1,20 +1,11 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { allVocabularyWords } from "@/utils/words";
+import { useSearchParams, useRouter } from "next/navigation";
+import { allVocabularyWords, WORDS_PER_GROUP, getGroupName, getTotalGroups } from "@/utils/words";
 import { auth, db } from "@/utils/firebase";
 import { doc, setDoc, collection, getDocs } from "firebase/firestore";
 import { speak } from "@/utils/tts"; 
-
-// 取得等級的輔助函式
-const getLevel = (index: number) => {
-  if (index < 50) return "A1";
-  if (index < 100) return "A2";
-  if (index < 150) return "B1";
-  if (index < 200) return "B2";
-  if (index < 250) return "C1";
-  return "C2";
-};
 
 const shuffleArray = <T,>(array: T[]): T[] => {
   const newArray = [...array];
@@ -26,6 +17,10 @@ const shuffleArray = <T,>(array: T[]): T[] => {
 };
 
 export default function Page2() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const selectedGroup = searchParams.get("group") || "全部";
+
   const [quizList, setQuizList] = useState<string[][]>([]);
   const [currentQuizIndex, setCurrentQuizIndex] = useState(0);
   const [options, setOptions] = useState<string[]>([]);
@@ -36,16 +31,21 @@ export default function Page2() {
   
   const [questionCount, setQuestionCount] = useState<number | "all">(30);
   const [mode, setMode] = useState<"all" | "wrong">("all");
-  const [levelFilter, setLevelFilter] = useState<string>("全部"); // 新增等級狀態
 
-  const initQuiz = useCallback(async (count: number | "all", currentMode: "all" | "wrong", level: string) => {
+  // 自動生成按鈕陣列
+  const groupButtons = ["全部", ...Array.from({ length: getTotalGroups() }, (_, i) => getGroupName(i * WORDS_PER_GROUP))];
+
+  const initQuiz = useCallback(async (count: number | "all", currentMode: "all" | "wrong", group: string) => {
     let sourceWords: string[][] = [];
 
     if (currentMode === "all") {
-      // 依等級過濾資料
-      sourceWords = allVocabularyWords.filter((_, index) => 
-        level === "全部" || getLevel(index) === level
-      );
+      if (group === "全部") {
+        sourceWords = [...allVocabularyWords];
+      } else {
+        const groupNum = parseInt(group.replace("第 ", "").replace(" 組", ""));
+        const startIndex = (groupNum - 1) * WORDS_PER_GROUP;
+        sourceWords = allVocabularyWords.slice(startIndex, startIndex + WORDS_PER_GROUP);
+      }
     } else {
       const currentUser = auth.currentUser;
       if (currentUser) {
@@ -55,9 +55,8 @@ export default function Page2() {
     }
 
     if (sourceWords.length === 0) {
-      alert("該篩選條件下目前無可用單字");
-      setLevelFilter("全部");
-      setMode("all");
+      alert("該條件下目前無可用單字");
+      router.push(`?group=全部`);
       return;
     }
 
@@ -70,16 +69,18 @@ export default function Page2() {
     setQuizFinished(false);
     setIsAnswered(false);
     setSelectedOption(null);
-  }, []);
+  }, [router]);
 
+  useEffect(() => {
+    initQuiz(questionCount, mode, selectedGroup);
+  }, [initQuiz, questionCount, mode, selectedGroup]);
+
+  // 發音與題目更新邏輯保持不變...
   useEffect(() => {
     if (quizList.length > 0 && quizList[currentQuizIndex]) {
       speak(quizList[currentQuizIndex][0]);
     }
   }, [currentQuizIndex, quizList]);
-
-  // 當模式、題數或等級變更時，重新初始化
-  useEffect(() => { initQuiz(questionCount, mode, levelFilter); }, [initQuiz, questionCount, mode, levelFilter]);
 
   useEffect(() => {
     if (quizList.length === 0 || quizFinished) return;
@@ -95,15 +96,11 @@ export default function Page2() {
     if (isAnswered) return;
     setSelectedOption(opt);
     setIsAnswered(true);
-    const currentWord = quizList[currentQuizIndex];
-
-    if (opt === currentWord[1]) {
-      setScore((prev) => prev + 1);
-    } else {
+    if (opt === quizList[currentQuizIndex][1]) setScore((prev) => prev + 1);
+    else {
       const currentUser = auth.currentUser;
       if (currentUser) {
-        const userWrongDocRef = doc(db, "users", currentUser.uid, "wrongWords", currentWord[0]);
-        await setDoc(userWrongDocRef, { meaning: currentWord[1], count: 3 });
+        await setDoc(doc(db, "users", currentUser.uid, "wrongWords", quizList[currentQuizIndex][0]), { meaning: quizList[currentQuizIndex][1] });
       }
     }
   };
@@ -114,64 +111,28 @@ export default function Page2() {
         {!quizFinished ? (
           <div>
             <div style={{ textAlign: "center", marginBottom: 30, background: "#f4f4f4", padding: "20px", borderRadius: "12px" }}>
-              <div style={{ marginBottom: 15 }}>
-                <button className={`btn ${mode === "all" ? "active" : "btn-secondary"}`} onClick={() => setMode("all")}>📖 全部單字</button>
-                <button className={`btn ${mode === "wrong" ? "active" : "btn-secondary"}`} onClick={() => setMode("wrong")} style={{ marginLeft: 10 }}>🎯 不熟悉單字</button>
-              </div>
+              <button className={`btn ${mode === "all" ? "active" : "btn-secondary"}`} onClick={() => setMode("all")}>📖 全部單字</button>
+              <button className={`btn ${mode === "wrong" ? "active" : "btn-secondary"}`} onClick={() => setMode("wrong")} style={{ marginLeft: 10 }}>🎯 不熟悉單字</button>
               
-              {/* 等級篩選按鈕區 */}
-              <div style={{ marginBottom: 15 }}>
-                <p style={{ fontWeight: "bold", fontSize: "14px", marginBottom: "8px" }}>篩選等級：</p>
-                {["全部", "A1", "A2", "B1", "B2", "C1", "C2"].map((lvl) => (
-                  <button key={lvl} className={`btn ${levelFilter === lvl ? "active" : "btn-secondary"}`} onClick={() => setLevelFilter(lvl)} style={{ margin: "2px" }}>
-                    {lvl}
-                  </button>
+              <div style={{ marginTop: 15 }}>
+                <p style={{ fontWeight: "bold", fontSize: "14px" }}>篩選分組：</p>
+                {groupButtons.map((g) => (
+                  <button key={g} className={`btn ${selectedGroup === g ? "active" : "btn-secondary"}`} onClick={() => router.push(`?group=${encodeURIComponent(g)}`)} style={{ margin: "2px" }}>{g}</button>
                 ))}
               </div>
-
-              {currentQuizIndex === 0 && !isAnswered && (
-                <div>
-                  <p style={{ fontWeight: "bold", fontSize: "14px", marginBottom: "10px" }}>選擇測驗題數：</p>
-                  <div style={{ display: "flex", justifyContent: "center", gap: 10 }}>
-                    {[10, 30, 50, "all"].map((num) => (
-                      <button key={num} className={`count-btn ${questionCount === num ? "active" : ""}`} onClick={() => setQuestionCount(num as number | "all")}>
-                        {num === "all" ? "全部" : `${num} 題`}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
             </div>
-            
-            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 20, fontSize: "1.1rem" }}>
-              <div>範圍：<strong>{mode === "all" ? `${levelFilter} 範圍` : "不熟悉單字"}</strong></div>
-              <div>進度：<strong>{currentQuizIndex + 1} / {quizList.length}</strong></div>
-            </div>
-            
-            <div className="q-title" style={{ fontSize: "2.5rem", textAlign: "center", margin: "30px 0", fontWeight: "bold" }}>
-              {quizList[currentQuizIndex]?.[0]}
-              <button onClick={() => speak(quizList[currentQuizIndex][0])} style={{ marginLeft: "15px", cursor: "pointer", background: "transparent", border: "none", fontSize: "1.8rem" }} title="播放發音">🔊</button>
-            </div>
-            
+            {/* 測驗區塊 */}
+            <div style={{ fontSize: "2.5rem", textAlign: "center", margin: "30px 0" }}>{quizList[currentQuizIndex]?.[0]}</div>
             <div className="options-grid">
               {options.map((opt, i) => (
-                <button key={i} className={`opt-btn ${isAnswered ? (opt === quizList[currentQuizIndex][1] ? "correct" : selectedOption === opt ? "wrong" : "") : ""}`} onClick={() => handleOptionClick(opt)} disabled={isAnswered}>
-                  {opt}
-                </button>
+                <button key={i} className={`opt-btn ${isAnswered ? (opt === quizList[currentQuizIndex][1] ? "correct" : selectedOption === opt ? "wrong" : "") : ""}`} onClick={() => handleOptionClick(opt)}>{opt}</button>
               ))}
             </div>
-            
-            {isAnswered && (
-              <button className="btn" style={{ width: "100%", marginTop: 30, padding: "15px" }} onClick={() => currentQuizIndex === quizList.length - 1 ? setQuizFinished(true) : setCurrentQuizIndex((p) => p + 1)}>
-                {currentQuizIndex === quizList.length - 1 ? "查看結果" : "下一題 ➡️"}
-              </button>
-            )}
           </div>
         ) : (
-          <div style={{ textAlign: "center", padding: 60, background: "#fff", border: "1px solid #ddd" }}>
-            <h2>🎉 測驗完成！</h2>
-            <p style={{ fontSize: "1.5rem" }}>最終得分：{score} / {quizList.length}</p>
-            <button className="btn" style={{ marginTop: 20 }} onClick={() => initQuiz(questionCount, mode, levelFilter)}>再挑戰一次</button>
+          <div style={{ textAlign: "center", padding: 60 }}>
+            <h2>🎉 測驗完成！得分：{score} / {quizList.length}</h2>
+            <button className="btn" onClick={() => initQuiz(questionCount, mode, selectedGroup)}>再挑戰一次</button>
           </div>
         )}
       </div>

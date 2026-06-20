@@ -389,10 +389,9 @@ currency|貨幣
 debt|債/欠款
 `;
 
-// 2. 過濾重複單字的函數（加上精確的 TypeScript 陣列型態定義）
+// 2. 過濾重複單字的函數
 export function getUniqueWords(data: string): string[][] {
   const seen = new Set<string>();
-
   return data
     .trim()
     .split("\n")
@@ -402,22 +401,24 @@ export function getUniqueWords(data: string): string[][] {
     })
     .filter((word) => {
       if (!word[0]) return false; // 排除空行
-      if (seen.has(word[0])) {
-        return false; // 重複單字直接過濾
-      }
+      if (seen.has(word[0])) return false; // 重複單字直接過濾
       seen.add(word[0]);
       return true;
     });
 }
-export const getLevel = (index: number) => {
-  if (index < 50) return "A1";
-  if (index < 100) return "A2";
-  if (index < 150) return "B1";
-  if (index < 200) return "B2";
-  if (index < 250) return "C1";
-  return "C2";
+
+// 3. 預先編譯好的單字陣列
+export const allVocabularyWords = getUniqueWords(wordDataString);
+
+// 4. 自動化分組設定 (每 50 個一組)
+export const WORDS_PER_GROUP = 50;
+
+// 5. 自動獲取組別名稱 (取代舊的 getLevel)
+// 這會根據索引自動算出是「第 1 組」、「第 2 組」...
+export const getGroupName = (index: number) => {
+  const groupNumber = Math.floor(index / WORDS_PER_GROUP) + 1;
+  return `第 ${groupNumber} 組`;
 };
 
-
-// 3. 預先編譯好的單字陣列，提供給前端直接呼叫
-export const allVocabularyWords = getUniqueWords(wordDataString);
+// 6. 自動計算總共有幾組 (讓前端知道要產生幾個按鈕)
+export const getTotalGroups = () => Math.ceil(allVocabularyWords.length / WORDS_PER_GROUP);
