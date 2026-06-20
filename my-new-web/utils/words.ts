@@ -372,6 +372,21 @@ accounting|會計 結帳
 asset|資產
 audit|查帳
 balance|結餘
+bond|債券
+borrow|借入
+bounce|拒付或退回
+budget|編列預算/預算
+bullish|股市行情(看漲樂觀的)
+calculate|計算/估計
+capital|資金
+cash flow|現金流量
+certificate of deposit|定期存款單
+commission|委任/佣金
+commit|保證/承諾
+convert|轉變/轉換
+credit rating|信用評等
+currency|貨幣
+debt|債/欠款
 `;
 
 // 2. 過濾重複單字的函數（加上精確的 TypeScript 陣列型態定義）
