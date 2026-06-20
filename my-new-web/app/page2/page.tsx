@@ -60,7 +60,7 @@ export default function Page2() {
     }
 
     const shuffledSource = shuffleArray(sourceWords);
-    const finalCount = count === "all" ? shuffledSource.length : Math.min(count, shuffledSource.length);
+    const finalCount = count === "all" ? shuffledSource.length : Math.min(count as number, shuffledSource.length);
     
     setQuizList(shuffledSource.slice(0, finalCount));
     setCurrentQuizIndex(0);
@@ -109,31 +109,53 @@ export default function Page2() {
         {!quizFinished ? (
           <div>
             <div style={{ textAlign: "center", marginBottom: 30, background: "#f4f4f4", padding: "20px", borderRadius: "12px" }}>
-              <button className={`btn ${mode === "all" ? "active" : "btn-secondary"}`} onClick={() => setMode("all")}>📖 全部單字</button>
-              <button className={`btn ${mode === "wrong" ? "active" : "btn-secondary"}`} onClick={() => setMode("wrong")} style={{ marginLeft: 10 }}>🎯 不熟悉單字</button>
+              <button className={`btn ${mode === "all" ? "active" : "btn-secondary"}`} onClick={() => { setMode("all"); setCurrentQuizIndex(0); }}>📖 全部單字</button>
+              <button className={`btn ${mode === "wrong" ? "active" : "btn-secondary"}`} onClick={() => { setMode("wrong"); setCurrentQuizIndex(0); }} style={{ marginLeft: 10 }}>🎯 不熟悉單字</button>
               
-              {/* 只有在 "全部單字" 模式下才顯示分組篩選 */}
               {mode === "all" && (
                 <div style={{ marginTop: 15 }}>
-                  <p style={{ fontWeight: "bold", fontSize: "14px" }}>篩選分組：</p>
+                  <p style={{ fontWeight: "bold", fontSize: "14px", marginBottom: 8 }}>篩選分組：</p>
                   {groupButtons.map((g) => (
                     <button key={g} className={`btn ${selectedGroup === g ? "active" : "btn-secondary"}`} onClick={() => router.push(`?group=${encodeURIComponent(g)}`)} style={{ margin: "2px" }}>{g}</button>
                   ))}
                 </div>
               )}
+
+              {/* 只有在尚未開始答題時才顯示題數選擇 */}
+              {currentQuizIndex === 0 && !isAnswered && (
+                <div style={{ marginTop: 15 }}>
+                  <p style={{ fontWeight: "bold", fontSize: "14px", marginBottom: 8 }}>選擇題數：</p>
+                  {[10, 30, 50, "all"].map((num) => (
+                    <button key={num} className={`btn ${questionCount === num ? "active" : "btn-secondary"}`} onClick={() => setQuestionCount(num as number | "all")} style={{ margin: "2px" }}>
+                      {num === "all" ? "全部" : `${num} 題`}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* 進度顯示 */}
+            <div style={{ textAlign: "center", fontSize: "1.2rem", fontWeight: "bold", marginBottom: 20 }}>
+              目前進度：{currentQuizIndex + 1} / {quizList.length}
             </div>
             
             <div style={{ fontSize: "2.5rem", textAlign: "center", margin: "30px 0" }}>{quizList[currentQuizIndex]?.[0]}</div>
             <div className="options-grid">
               {options.map((opt, i) => (
-                <button key={i} className={`opt-btn ${isAnswered ? (opt === quizList[currentQuizIndex][1] ? "correct" : selectedOption === opt ? "wrong" : "") : ""}`} onClick={() => handleOptionClick(opt)}>{opt}</button>
+                <button key={i} className={`opt-btn ${isAnswered ? (opt === quizList[currentQuizIndex][1] ? "correct" : selectedOption === opt ? "wrong" : "") : ""}`} onClick={() => handleOptionClick(opt)} disabled={isAnswered}>{opt}</button>
               ))}
             </div>
+
+            {isAnswered && (
+              <button className="btn" style={{ width: "100%", marginTop: 30, padding: "15px" }} onClick={() => currentQuizIndex === quizList.length - 1 ? setQuizFinished(true) : setCurrentQuizIndex((p) => p + 1)}>
+                {currentQuizIndex === quizList.length - 1 ? "查看結果" : "下一題 ➡️"}
+              </button>
+            )}
           </div>
         ) : (
           <div style={{ textAlign: "center", padding: 60 }}>
             <h2>🎉 測驗完成！得分：{score} / {quizList.length}</h2>
-            <button className="btn" onClick={() => initQuiz(questionCount, mode, selectedGroup)}>再挑戰一次</button>
+            <button className="btn" style={{ marginTop: 20 }} onClick={() => initQuiz(questionCount, mode, selectedGroup)}>再挑戰一次</button>
           </div>
         )}
       </div>
