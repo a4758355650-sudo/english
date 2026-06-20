@@ -409,6 +409,15 @@ export function getUniqueWords(data: string): string[][] {
       return true;
     });
 }
+export const getLevel = (index: number) => {
+  if (index < 50) return "A1";
+  if (index < 100) return "A2";
+  if (index < 150) return "B1";
+  if (index < 200) return "B2";
+  if (index < 250) return "C1";
+  return "C2";
+};
+
 
 // 3. 預先編譯好的單字陣列，提供給前端直接呼叫
 export const allVocabularyWords = getUniqueWords(wordDataString);
