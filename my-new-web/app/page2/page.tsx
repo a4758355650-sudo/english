@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { allVocabularyWords, WORDS_PER_GROUP, getGroupName, getTotalGroups } from "@/utils/words";
 import { auth, db } from "@/utils/firebase";
-import { doc, setDoc, collection, getDocs } from "firebase/firestore";
+import { doc, setDoc, collection, getDocs, getDoc, updateDoc, deleteDoc, increment } from "firebase/firestore";
 import { speak } from "@/utils/tts";
 
 const shuffleArray = <T,>(array: T[]): T[] => {
@@ -62,7 +62,6 @@ export default function Page2() {
     setIsAnswered(false);
   }, []);
 
-  // 當配置變更時，強制重置練習
   const handleConfigChange = (newMode: "all" | "wrong", newGroup: string, newCount: number | "all") => {
     setMode(newMode);
     setSelectedGroup(newGroup);
@@ -89,9 +88,31 @@ export default function Page2() {
   const handleOptionClick = async (opt: string) => {
     if (isAnswered) return;
     setIsAnswered(true);
-    if (opt === quizList[currentQuizIndex][1]) setScore(p => p + 1);
-    else if (auth.currentUser) {
-      await setDoc(doc(db, "users", auth.currentUser.uid, "wrongWords", quizList[currentQuizIndex][0]), { meaning: quizList[currentQuizIndex][1] });
+    
+    const currentWord = quizList[currentQuizIndex];
+    const isCorrect = opt === currentWord[1];
+    const userId = auth.currentUser?.uid;
+
+    if (isCorrect) {
+      setScore(p => p + 1);
+      // 若在「不熟悉單字」模式下，執行答對三次移除邏輯
+      if (userId && mode === "wrong") {
+        const docRef = doc(db, "users", userId, "wrongWords", currentWord[0]);
+        const snap = await getDoc(docRef);
+        if (snap.exists()) {
+          const currentCount = snap.data().count || 0;
+          if (currentCount >= 2) await deleteDoc(docRef); // 達標移除
+          else await updateDoc(docRef, { count: increment(1) }); // 累加
+        }
+      }
+    } else {
+      // 答錯存入，並重置計數為 0
+      if (userId) {
+        await setDoc(doc(db, "users", userId, "wrongWords", currentWord[0]), { 
+          meaning: currentWord[1], 
+          count: 0 
+        }, { merge: true });
+      }
     }
   };
 
@@ -100,7 +121,6 @@ export default function Page2() {
       <div className="shell" style={{ padding: "20px" }}>
         {!quizFinished ? (
           <div>
-            {/* 配置區域 */}
             <div style={{ textAlign: "center", marginBottom: 20 }}>
               <button className={`btn ${mode === "all" ? "active" : ""}`} onClick={() => handleConfigChange("all", selectedGroup, questionCount)}>📖 全部單字</button>
               <button className={`btn ${mode === "wrong" ? "active" : ""}`} onClick={() => handleConfigChange("wrong", selectedGroup, questionCount)} style={{ marginLeft: 10 }}>🎯 不熟悉單字</button>
@@ -120,7 +140,6 @@ export default function Page2() {
               </div>
             </div>
 
-            {/* 進度顯示 */}
             <div style={{ textAlign: "center", fontWeight: "bold", fontSize: "1.2rem" }}>
               範圍：{mode === "all" ? selectedGroup : "不熟悉單字"} | 進度：{currentQuizIndex + 1} / {quizList.length}
             </div>
