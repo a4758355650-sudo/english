@@ -32,7 +32,6 @@ export default function Page2() {
   const [questionCount, setQuestionCount] = useState<number | "all">(30);
   const [mode, setMode] = useState<"all" | "wrong">("all");
 
-  // 自動生成按鈕陣列
   const groupButtons = ["全部", ...Array.from({ length: getTotalGroups() }, (_, i) => getGroupName(i * WORDS_PER_GROUP))];
 
   const initQuiz = useCallback(async (count: number | "all", currentMode: "all" | "wrong", group: string) => {
@@ -56,7 +55,7 @@ export default function Page2() {
 
     if (sourceWords.length === 0) {
       alert("該條件下目前無可用單字");
-      router.push(`?group=全部`);
+      if (currentMode === "all") router.push(`?group=全部`);
       return;
     }
 
@@ -75,7 +74,6 @@ export default function Page2() {
     initQuiz(questionCount, mode, selectedGroup);
   }, [initQuiz, questionCount, mode, selectedGroup]);
 
-  // 發音與題目更新邏輯保持不變...
   useEffect(() => {
     if (quizList.length > 0 && quizList[currentQuizIndex]) {
       speak(quizList[currentQuizIndex][0]);
@@ -114,14 +112,17 @@ export default function Page2() {
               <button className={`btn ${mode === "all" ? "active" : "btn-secondary"}`} onClick={() => setMode("all")}>📖 全部單字</button>
               <button className={`btn ${mode === "wrong" ? "active" : "btn-secondary"}`} onClick={() => setMode("wrong")} style={{ marginLeft: 10 }}>🎯 不熟悉單字</button>
               
-              <div style={{ marginTop: 15 }}>
-                <p style={{ fontWeight: "bold", fontSize: "14px" }}>篩選分組：</p>
-                {groupButtons.map((g) => (
-                  <button key={g} className={`btn ${selectedGroup === g ? "active" : "btn-secondary"}`} onClick={() => router.push(`?group=${encodeURIComponent(g)}`)} style={{ margin: "2px" }}>{g}</button>
-                ))}
-              </div>
+              {/* 只有在 "全部單字" 模式下才顯示分組篩選 */}
+              {mode === "all" && (
+                <div style={{ marginTop: 15 }}>
+                  <p style={{ fontWeight: "bold", fontSize: "14px" }}>篩選分組：</p>
+                  {groupButtons.map((g) => (
+                    <button key={g} className={`btn ${selectedGroup === g ? "active" : "btn-secondary"}`} onClick={() => router.push(`?group=${encodeURIComponent(g)}`)} style={{ margin: "2px" }}>{g}</button>
+                  ))}
+                </div>
+              )}
             </div>
-            {/* 測驗區塊 */}
+            
             <div style={{ fontSize: "2.5rem", textAlign: "center", margin: "30px 0" }}>{quizList[currentQuizIndex]?.[0]}</div>
             <div className="options-grid">
               {options.map((opt, i) => (
