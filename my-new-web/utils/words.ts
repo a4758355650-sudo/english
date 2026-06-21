@@ -387,6 +387,21 @@ convert|轉變/轉換
 credit rating|信用評等
 currency|貨幣
 debt|債/欠款
+deduct|扣除
+deposit|保證金
+depression|蕭條不景氣
+dividend|股息
+down payment|頭期款
+endorse|背書 贊同
+exchange|交換
+expenditure|消費支出
+financial statement|財務報表
+fiscal year|會計年度
+fund|基金
+gross margin|毛利
+in the red|負債
+income statement|損益表
+installment|分期付款
 `;
 
 // 2. 過濾重複單字的函數
