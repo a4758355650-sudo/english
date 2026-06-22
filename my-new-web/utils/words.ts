@@ -402,7 +402,6 @@ gross margin|毛利
 in the red|負債
 income statement|損益表
 installment|分期付款
-英文 | 中文
 Interest | 利息
 Invest | 投資
 Loan | 貸款
