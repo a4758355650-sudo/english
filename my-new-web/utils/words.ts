@@ -402,6 +402,22 @@ gross margin|毛利
 in the red|負債
 income statement|損益表
 installment|分期付款
+英文 | 中文
+Interest | 利息
+Invest | 投資
+Loan | 貸款
+Mature | (定存/票據) 到期
+Minimum | 最低限度 / 最小數
+Net income | 淨損益 / 淨收入
+Owe | 欠債
+Penalty | 罰款 / 處罰
+Portfolio | 投資組合
+Profit | 利益 / 有益於
+Pull out | 收手 / 收回 / 退出
+Quote | 報價
+Refinance | 重新貸款
+Reimburse | 償還 / 賠償
+Remittance | 匯款
 `;
 
 // 2. 過濾重複單字的函數
