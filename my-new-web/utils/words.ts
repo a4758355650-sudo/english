@@ -417,6 +417,35 @@ Quote | 報價
 Refinance | 重新貸款
 Reimburse | 償還 / 賠償
 Remittance | 匯款
+acquisition | 收購 / 購置
+affiliated company | 關係企業
+ahead of the game | 在（某領域）領先
+allocate | 分派
+bankruptcy | 破產
+boast | 以……而自豪
+branch office | 分公司
+branch out | 擴充
+breakthrough | 突破
+brochure | 小冊子
+company profile | 公司概況
+competent | 有能力的 / 能勝任的
+comprehensive | 廣泛的 / 全面的
+contribution | 貢獻 / 捐款 / 捐贈物
+core business | 核心事業
+return | 收益利息
+revenue | 收益 / 稅收
+safe deposit box | 保險箱
+tax refund | 退稅
+transaction | 辦理商務手續
+transfer | 轉帳
+voucher | 憑證
+wire | 電匯
+withdraw | 提款
+courier | 快遞員
+course | 過程
+current | 目前的
+occur | 發生
+recur | 再次發生
 `;
 
 // 2. 過濾重複單字的函數
