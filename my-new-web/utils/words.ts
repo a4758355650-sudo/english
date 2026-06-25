@@ -446,6 +446,21 @@ course | 過程
 current | 目前的
 occur | 發生
 recur | 再次發生
+corner the market | 壟斷市場
+corporation | 企業
+counselor | 顧問
+cutting edge | 尖端的 先進的
+delegate | 委派
+demographic | 人口統計資料
+division | 事業部
+dominate | 支配 在.........中佔主要地位
+enhancement | 提高
+expand | 張開
+expertise | 專業知識
+feature | 特色 以.....為特色
+found | 創立
+functionality | 功能
+high end | 高消費階層的 迎合高層次消費者的
 `;
 
 // 2. 過濾重複單字的函數
