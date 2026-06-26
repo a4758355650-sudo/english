@@ -461,6 +461,21 @@ feature | 特色 以.....為特色
 found | 創立
 functionality | 功能
 high end | 高消費階層的 迎合高層次消費者的
+in association with | 與……合作
+incorporate | 納入
+initiate | 發起
+innovation | 創新（註：原字義通常為「創新/革新」，「創立」通常用 foundation 或 establishment）
+integrated | 整合的
+intellectual property | 智慧財產權
+keep up with | 跟上、保持聯繫、持續學習
+last but not least | 最後，但也同樣重要的
+listed company | 上市公司
+marketable | 有銷路的、暢銷的、市場的
+match up | 撮合、媒合
+merger | 合併
+monopoly | 獨佔、壟斷
+operation | 營運
+outlook | 展望、看法、前景
 `;
 
 // 2. 過濾重複單字的函數
