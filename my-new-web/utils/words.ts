@@ -476,6 +476,21 @@ merger | 合併
 monopoly | 獨佔、壟斷
 operation | 營運
 outlook | 展望、看法、前景
+oversee | 監督
+product development | 產品開發
+prototype | 原型、標準、模範
+research and development | 研發（R&D）
+resistant | 防...的、抗...的
+resource | 資源
+slogan | 宣傳口號、廣告語
+specs | 產品規格（specifications 的縮寫）
+state-run enterprise | 國營企業
+stylish | 時髦的、有風格的
+subsidiary | 子公司
+task | 任務、工作
+team up with | 與...合作
+underestimate | 低估
+user-friendly | 容易使用的、人性化的
 `;
 
 // 2. 過濾重複單字的函數
