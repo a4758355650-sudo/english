@@ -491,6 +491,21 @@ task | 任務、工作
 team up with | 與...合作
 underestimate | 低估
 user-friendly | 容易使用的、人性化的
+diplomacy | 外交
+intimacy | 親密
+literacy | 讀寫能力
+privacy | 隱私
+fallacy | 謬見
+access | 存取 取得方法 門路
+back up | 備份
+broadband | 寬頻
+browse | 瀏覽
+cable | 電纜
+capacity | 容量
+chatbot | 聊天機器人
+chip | 晶片
+community | 社群
+companywide | 全公司地
 `;
 
 // 2. 過濾重複單字的函數
