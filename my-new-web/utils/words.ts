@@ -506,6 +506,21 @@ chatbot | 聊天機器人
 chip | 晶片
 community | 社群
 companywide | 全公司地
+connectivity|網路連接
+crash|當機
+database|資料庫
+digital|數位 數位的 數字的
+download|下載
+filename|檔名
+folder|檔案夾
+formula|公式 處方 配方
+get online|上網
+go live|正式上線
+graphics file|圖檔
+infect|感染
+interface|介面
+internet connection|網路連線
+key combination|組合功能鍵
 `;
 
 // 2. 過濾重複單字的函數
