@@ -521,6 +521,21 @@ infect|感染
 interface|介面
 internet connection|網路連線
 key combination|組合功能鍵
+keyboard|鍵盤
+laboratory|實驗室
+laptop|筆記型電腦
+link|連結
+log on|登入
+login|進入系統 登陸
+memory|記憶體
+monitor|螢幕
+online|線上的
+operating system|作業系統
+phase|階段
+platform|平台
+plug|插頭 插上插頭
+pop up|突然出現
+network|網路
 `;
 
 // 2. 過濾重複單字的函數
