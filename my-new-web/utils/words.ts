@@ -536,6 +536,21 @@ platform|平台
 plug|插頭 插上插頭
 pop up|突然出現
 network|網路
+power button | 電源按鈕
+reinforcement learning | 強化學習
+restart | 重新開機
+search | 搜尋
+sequence | 連續
+serial number | 序號
+server | 伺服器
+short circuit | 短路
+shortcut | 快捷方式
+software | 軟體
+substitute | 代替
+technician | 技術人員
+top of the line | 頂級的 (註：原字「top op」修正為「top of」)
+up and running | 正常運作的
+upgrade | 升級
 `;
 
 // 2. 過濾重複單字的函數
