@@ -551,6 +551,21 @@ technician | 技術人員
 top of the line | 頂級的 (註：原字「top op」修正為「top of」)
 up and running | 正常運作的
 upgrade | 升級
+user name|使用者名稱
+virus|病毒
+wi-fi|網路
+wireless|無線的
+wizard|高手
+electrician|電工
+magician|魔術師
+musician|音樂家
+physician|醫生
+politician|政治家
+architecture|建築物
+attic|閣樓
+balcony|陽台
+basement|地下室
+block|街區
 `;
 
 // 2. 過濾重複單字的函數
