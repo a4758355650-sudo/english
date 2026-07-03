@@ -566,6 +566,21 @@ attic|閣樓
 balcony|陽台
 basement|地下室
 block|街區
+bookcase|書櫃
+brand new|新的
+brick|磚塊
+burglar|防盜警鈴
+cabinet|櫥櫃
+cement|水泥
+collapse|倒塌
+complex|綜合大樓
+concrete|混泥土
+condominium|公寓大廈
+construction|建造
+crane|起重機
+decoration|裝潢
+district|行政區
+downtown|(在)市中心(的)
 `;
 
 // 2. 過濾重複單字的函數
