@@ -581,6 +581,21 @@ crane|起重機
 decoration|裝潢
 district|行政區
 downtown|(在)市中心(的)
+drainpipe|排水管
+drill|鑽孔機
+elevator|電梯
+entranceway|入口
+escalator|電扶梯
+fire escape|逃生通道
+foreman|工頭
+foundation|地基
+hard hat|工地安全帽
+infrastructure|基礎建設
+intercom|對講機
+kitchen sink|廚房水槽
+landlord|房東
+landmark|地標
+lawn|草坪
 `;
 
 // 2. 過濾重複單字的函數
