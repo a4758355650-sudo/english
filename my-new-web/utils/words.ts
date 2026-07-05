@@ -596,6 +596,21 @@ kitchen sink|廚房水槽
 landlord|房東
 landmark|地標
 lawn|草坪
+leak|漏洞
+lease|租用
+marble|大理石
+mortgage|房屋貸款
+move in|搬進
+neighborhood|鄰近社區
+nursery|育嬰室
+paint|油漆
+plumber|水管工
+real estate|房地產
+regional|地區的 區域性的
+remodel|改建 重新塑造
+renovation|整修
+residence|住所
+spacious|寬敞的
 `;
 
 // 2. 過濾重複單字的函數
