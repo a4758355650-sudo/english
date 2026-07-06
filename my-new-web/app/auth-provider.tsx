@@ -43,6 +43,7 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
         <Link href="/page1" className="nav-link">📖 全部單字練習</Link>
         <Link href="/page2" className="nav-link">🎲 選擇題抽考</Link>
         {/* <Link href="/page3" className="nav-link">🎯 不熟悉單字</Link>*/} 
+        <Link href="/page4" className="nav-link">單字總覽</Link>
         <Link href="/profile" className="nav-link">👤 個人中心</Link>
         1
         <div className="user-zone">
