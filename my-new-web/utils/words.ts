@@ -611,6 +611,21 @@ remodel|改建 重新塑造
 renovation|整修
 residence|住所
 spacious|寬敞的
+story|(建築物)層樓
+sublet|轉租 分租
+suburb|郊區
+tape measure|捲尺
+territory|領土;版圖;區域
+tidy|整潔
+tile|磁磚
+timber|木材 木料
+utility|公用事業公共設施
+wheelbarrow|手推車獨輪小車
+mysterious|神秘的
+dangerous|危險的
+cautious|小心的
+courteous|有禮的
+miraculous|奇蹟般的 神奇的
 `;
 
 // 2. 過濾重複單字的函數
