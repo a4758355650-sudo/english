@@ -626,6 +626,21 @@ dangerous|危險的
 cautious|小心的
 courteous|有禮的
 miraculous|奇蹟般的 神奇的
+accommodation | 住宿
+airline | 航空公司
+announcement | 公告
+bellhop | 行李員
+belongings | 財產 攜帶物品
+beverage | 飲料
+board | 登上
+book | 預定
+cabin | 機艙
+captain | 機長
+carry on | 隨身行李
+check in | 報到
+complimentary | 贈送的
+concierge | 服務台職員
+customs | 海關
 `;
 
 // 2. 過濾重複單字的函數
