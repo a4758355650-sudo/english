@@ -641,6 +641,21 @@ check in | 報到
 complimentary | 贈送的
 concierge | 服務台職員
 customs | 海關
+delay | 使延後、延遲
+depart | 啟程
+destination | 目的地
+drop off service | 異地還車服務
+duty free shop | 免稅商店
+economy class | 經濟艙
+expense | 開支
+expire | 到期
+fare | 費用
+fill up | 加滿
+final call | 最後登機廣播
+fine | 罰金
+front desk | 櫃台
+hostel | 青年旅社
+housekeeping | 房間清潔
 `;
 
 // 2. 過濾重複單字的函數
