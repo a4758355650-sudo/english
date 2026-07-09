@@ -656,6 +656,21 @@ fine | 罰金
 front desk | 櫃台
 hostel | 青年旅社
 housekeeping | 房間清潔
+itinerary|行程
+jet lag|時差
+landing|降落
+laundry service|衣物清洗服務
+license|許可證
+luggage cart|行李推車
+metal detector|金屬探測器
+nonstop flight|直達航班
+one way ticket|單程票
+overhead compartment|置物櫃（飛機上方行李櫃）
+overlook|眺望；俯瞰
+passenger|乘客
+rate|費率
+refreshment|茶點
+renew|更新；使更新；續約
 `;
 
 // 2. 過濾重複單字的函數
