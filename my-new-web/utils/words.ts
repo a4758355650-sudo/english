@@ -671,6 +671,22 @@ passenger|乘客
 rate|費率
 refreshment|茶點
 renew|更新；使更新；續約
+reservation|預約保留
+rush hour|尖峰時間
+security checkpoint|安全檢查站
+shuttle service|接送服務
+sightseeing brochure|旅遊手冊
+sign up|報名
+standby|候補
+subway|地下鐵
+suite|套房
+terminal|機場航廈
+timetable|時刻表
+tourist information|觀光資訊
+vacancy|空房
+valid|有效的
+vehicle|車輛
+
 `;
 
 // 2. 過濾重複單字的函數
