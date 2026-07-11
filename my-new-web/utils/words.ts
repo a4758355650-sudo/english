@@ -686,6 +686,21 @@ tourist information|觀光資訊
 vacancy|空房
 valid|有效的
 vehicle|車輛
+underpass | 地下道
+passport | 護照
+password | 密碼
+surpass | 超越
+passage | 通道
+alcoholic drinks | 含酒精飲料
+appetite | 食慾
+atmosphere | 氣氛
+banquet | 宴會
+bartender | 酒吧的侍者
+be accustomed to | 習慣於
+blend | 混合
+bring together | 使聚集
+buffet | 自助餐
+caffeine | 咖啡因
 
 `;
 
