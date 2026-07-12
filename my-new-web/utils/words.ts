@@ -701,6 +701,21 @@ blend | 混合
 bring together | 使聚集
 buffet | 自助餐
 caffeine | 咖啡因
+cater|提供飲食
+celebration|慶祝
+checkout counter|收銀台
+chef|主廚
+cuisine|菜餚
+culinary|烹飪的
+delicious|美味的
+demand|要求
+dessert|甜點
+diet|飲食
+dining|進餐
+dish|一道菜
+distinguish|區別、識別
+dressing|調料
+drunk|酒醉的
 
 `;
 
